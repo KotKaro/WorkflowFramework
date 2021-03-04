@@ -9,7 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowFramework.Abstracti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{79C26740-1E07-11EB-A33F-7939ABE05176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowFramework.Abstractions.UnitTests", "tests\WorkflowFramework.Abstractions.UnitTests\WorkflowFramework.Abstractions.UnitTests.csproj", "{3E8C7DAD-CCB7-4F61-AC13-267395866A5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowFramework.Domain.UnitTests", "tests\WorkflowFramework.Domain.UnitTests\WorkflowFramework.Domain.UnitTests.csproj", "{3E8C7DAD-CCB7-4F61-AC13-267395866A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowFramework.Domain", "src\WorkflowFramework.Domain\WorkflowFramework.Domain.csproj", "{73A586A7-49E9-43CB-977C-251F7D80EF90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BE5A120-A000-48FA-B237-A35C7C20C214}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,9 +55,22 @@ Global
 		{3E8C7DAD-CCB7-4F61-AC13-267395866A5A}.Release|x64.Build.0 = Release|Any CPU
 		{3E8C7DAD-CCB7-4F61-AC13-267395866A5A}.Release|x86.ActiveCfg = Release|Any CPU
 		{3E8C7DAD-CCB7-4F61-AC13-267395866A5A}.Release|x86.Build.0 = Release|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Debug|x64.Build.0 = Debug|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Debug|x86.Build.0 = Debug|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Release|x64.ActiveCfg = Release|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Release|x64.Build.0 = Release|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Release|x86.ActiveCfg = Release|Any CPU
+		{73A586A7-49E9-43CB-977C-251F7D80EF90}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3E8C7DAD-CCB7-4F61-AC13-267395866A5A} = {79C26740-1E07-11EB-A33F-7939ABE05176}
 		{77779741-51A3-4EE9-95DC-B1258B9BFB59} = {72905474-21D6-48B8-A3CE-A61627F7FF27}
+		{73A586A7-49E9-43CB-977C-251F7D80EF90} = {72905474-21D6-48B8-A3CE-A61627F7FF27}
 	EndGlobalSection
 EndGlobal

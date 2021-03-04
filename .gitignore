@@ -15,6 +15,7 @@
 *.deps.json
 *.dgspec.json
 *project.assets.json
+*.vs
 !.vscode/launch.json
 !.vscode/tasks.json
 !.vscode/settings.json
