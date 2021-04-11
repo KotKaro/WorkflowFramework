@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Domain.Common;
+using Domain.Exceptions;
+using Domain.Services;
+
+namespace Domain.ProcessAggregate
+{
+    public class ProcessRun : Entity
+    {
+        public Process Process { get; private set; }
+        public Step CurrentStep { get; private set; }
+
+        public IEnumerable<Argument> Arguments { get; private set; }
+
+        private ProcessRun() { }
+        
+        public ProcessRun(Process process, Step startStep, params Argument[] arguments)
+        {
+            Process = process ?? throw new ArgumentNullException(nameof(process));
+            CurrentStep = startStep ?? throw new ArgumentNullException(nameof(startStep));
+            Arguments = arguments;
+        }
+
+        public bool CanMove(Step targetStep, ExpectationResolverService expectationResolverService)
+        {
+            return Process.CanMove(CurrentStep, targetStep, expectationResolverService, Arguments.ToArray());
+        }
+
+        public void Move(Step targetStep, ExpectationResolverService expectationResolverService)
+        {
+            if (!CanMove(targetStep, expectationResolverService))
+            {
+                throw new ExpectationsNotMetExcpetion(CurrentStep, targetStep);
+            }
+
+            CurrentStep = targetStep;
+        }
+    }
+}
