@@ -32,7 +32,7 @@ namespace Domain.UnitTests.ProcessAggregate
         }
 
         [Fact]
-        public void When_StepNavigatorIntendedToCreateWithExpectationsButExpectationsAreNull_Expect_ArgumentExpectionThrown()
+        public void When_StepNavigatorIntendedToCreateWithExpectationsButExpectationsAreNull_Expect_ArgumentExceptionThrown()
         {
             Assert.Throws<ArgumentException>(() =>
             {
@@ -42,7 +42,7 @@ namespace Domain.UnitTests.ProcessAggregate
         }
 
         [Fact]
-        public void When_StepNavigatorIntendedToCreateWithExpectationsButExpectationsListHasNoElement_Expect_ArgumentExpectionThrown()
+        public void When_StepNavigatorIntendedToCreateWithExpectationsButExpectationsListHasNoElement_Expect_ArgumentExceptionThrown()
         {
             Assert.Throws<ArgumentException>(() =>
             {

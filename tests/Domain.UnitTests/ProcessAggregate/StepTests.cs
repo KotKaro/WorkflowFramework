@@ -68,5 +68,20 @@ namespace Domain.UnitTests.ProcessAggregate
                 new Step(TestDataFactory.CreateStepName(), Array.Empty<StepNavigator>());
             });
         }
+
+        [Fact]
+        public void When_StepAlreadyContainsStepNavigatorWithTargetStep_Expect_StepNavigatorCountDoesNotChange()
+        {
+            //Arrange
+            var step = new Step("test");
+            var targetStep = new Step("targetStep");
+
+            //Act
+            step.AddStepNavigators(new StepNavigator(targetStep));
+            step.AddStepNavigators(new StepNavigator(targetStep));
+            
+            //Assert
+            step.StepNavigators.Count().Should().Be(1);
+        }
     }
 }

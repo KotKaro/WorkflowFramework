@@ -6,28 +6,25 @@ using Domain.Repositories;
 
 namespace Persistence.Repositories
 {
-    public class TypeMetadataRepository : ITypeMetadataRepository
+    internal class TypeMetadataRepository : RepositoryBase, ITypeMetadataRepository
     {
-        private readonly WorkflowFrameworkDbContext _dbContext;
-
-        public TypeMetadataRepository(WorkflowFrameworkDbContext dbContext)
+        public TypeMetadataRepository(WorkflowFrameworkDbContext context) : base(context)
         {
-            _dbContext = dbContext;
         }
         
         public async Task CreateAsync(TypeMetadata typeMetadata)
         {
-            await _dbContext.AddAsync(typeMetadata);
+            await Context.AddAsync(typeMetadata);
         }
 
         public void Remove(TypeMetadata typeMetadata)
         {
-            _dbContext.RemoveRange(typeMetadata);
+            Context.RemoveRange(typeMetadata);
         }
 
         public TypeMetadata GetByType(Type type)
         {
-            return _dbContext
+            return Context
                 .Set<TypeMetadata>()
                 .FirstOrDefault(x => x.Type == type);
         }

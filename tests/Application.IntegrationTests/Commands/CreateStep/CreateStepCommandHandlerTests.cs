@@ -22,6 +22,7 @@ namespace Application.IntegrationTests.Commands.CreateStep
                 _applicationFixture.Host.Services.GetService(typeof(WorkflowFrameworkDbContext)) as
                     WorkflowFrameworkDbContext;
 
+            context!.Set<StepNavigator>().RemoveRange(context!.Set<StepNavigator>());
             context!.Set<Step>().RemoveRange(context!.Set<Step>());
             context!.SaveChanges();
         }

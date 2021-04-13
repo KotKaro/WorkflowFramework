@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Domain.Common;
-using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
 
@@ -28,20 +27,9 @@ namespace Persistence
                 .As<IUnitOfWork>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<TypeMetadataRepository>()
-                .As<ITypeMetadataRepository>()
-                .InstancePerLifetimeScope();
-            
-            builder.RegisterType<StepRepository>()
-                .As<IStepRepository>()
-                .InstancePerLifetimeScope();
-            
-            builder.RegisterType<ExpectationRepository>()
-                .As<IExpectationRepository>()
-                .InstancePerLifetimeScope();
-            
-            builder.RegisterType<ProcessRepository>()
-                .As<IProcessRepository>()
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .AssignableTo(typeof(RepositoryBase))
+                .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }
     }

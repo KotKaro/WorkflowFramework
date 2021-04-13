@@ -6,23 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories
 {
-    public class ProcessRepository : IProcessRepository
+    internal class ProcessRepository : RepositoryBase, IProcessRepository
     {
-        private readonly WorkflowFrameworkDbContext _context;
-
-        public ProcessRepository(WorkflowFrameworkDbContext context)
+        public ProcessRepository(WorkflowFrameworkDbContext context) : base(context)
         {
-            _context = context;
         }
         
         public async Task CreateAsync(Process process)
         {
-            await _context.Set<Process>().AddAsync(process);
+            await Context.Set<Process>().AddAsync(process);
         }
 
         public Task<Process> GetByIdAsync(Guid id)
         {
-            return _context.Set<Process>()
+            return Context.Set<Process>()
                 .Include(x => x.Steps)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }

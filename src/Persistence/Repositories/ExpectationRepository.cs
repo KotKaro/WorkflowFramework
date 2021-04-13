@@ -6,18 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories
 {
-    public class ExpectationRepository : IExpectationRepository
+    internal class ExpectationRepository : RepositoryBase, IExpectationRepository
     {
-        private readonly WorkflowFrameworkDbContext _context;
-
-        public ExpectationRepository(WorkflowFrameworkDbContext context)
+        public ExpectationRepository(WorkflowFrameworkDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public Task<Expectation> GetByIdAsync(Guid id)
         {
-            return _context
+            return Context
                 .Set<Expectation>()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }

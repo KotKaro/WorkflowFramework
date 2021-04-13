@@ -40,8 +40,18 @@ namespace Domain.ProcessAggregate
                     throw new ArgumentException(nameof(stepNavigator));
                 }
 
+                if (GotStepNavigatorWithTargetStepId(stepNavigator.TargetStep.Id))
+                {
+                    continue;
+                }
+
                 _stepNavigators.Add(stepNavigator);
             }
+        }
+
+        public bool GotStepNavigatorWithTargetStepId(Guid id)
+        {
+            return _stepNavigators.Any(x => x.TargetStep.Id == id);
         }
     }
 }
