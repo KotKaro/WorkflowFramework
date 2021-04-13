@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domain.Common.ValueObjects;
 using Domain.Exceptions;
 using Domain.ProcessAggregate;
@@ -151,6 +152,54 @@ namespace Domain.UnitTests.ProcessAggregate
 
             //Assert
             process.Steps.Should().Contain(x => x.Name.Value == "SomeStep");
+        }
+        
+        [Fact]
+        public void When_TryingRemoveStepFromProcessAndStepIsNull_Expect_ArgumentNullExceptionThrown()
+        {
+            //Arrange
+            var process = new Process("test", new List<Step>
+            {
+                new("test")
+            });
+
+            //Act + Assert
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                process.RemoveStep(null);
+            });
+        }
+        
+        [Fact]
+        public void When_TryingRemoveStepFromProcessAndStepNotInProcess_Expect_StepsCountDoesNotChange()
+        {
+            //Arrange
+            var process = new Process("test");
+            var step = new Step("test");
+            
+            process.AddStep(step);
+
+            //Act
+            process.RemoveStep(new Step("test1"));
+            
+            //Assert
+            process.Steps.Count().Should().Be(1);
+        }
+        
+        [Fact]
+        public void When_TryingRemoveStepFromProcessAndStepInProcess_Expect_StepRemovedFromProcess()
+        {
+            //Arrange
+            var process = new Process("test");
+            var step = new Step("test");
+            
+            process.AddStep(step);
+
+            //Act
+            process.RemoveStep(step);
+            
+            //Assert
+            process.Steps.Count().Should().Be(0);
         }
     }
 }

@@ -7,6 +7,9 @@ namespace Persistence
     {
         private readonly IDbContextTransaction _transaction;
 
+        public IDbConnection Connection { get; }
+        public IsolationLevel IsolationLevel { get; }
+        
         public EntityFrameworkTransactionDecorator(IDbContextTransaction transaction)
         {
             _transaction = transaction;
@@ -28,8 +31,5 @@ namespace Persistence
         {
             _transaction.Rollback();
         }
-
-        public IDbConnection? Connection { get; }
-        public IsolationLevel IsolationLevel { get; }
     }
 }

@@ -20,13 +20,16 @@ namespace Persistence.Repositories
             await _dbContext.AddAsync(typeMetadata);
         }
 
-        public void Remove(TypeMetadataDto typeMetadataDto)
+        public void Remove(TypeMetadata typeMetadata)
         {
-            var typeMetadataToRemove = _dbContext.Set<TypeMetadata>()
-                .Where(x => x.Type ==
-                            Type.GetType($"{typeMetadataDto.TypeFullName},{typeMetadataDto.AssemblyFullName}"));
-            
-            _dbContext.RemoveRange(typeMetadataToRemove);
+            _dbContext.RemoveRange(typeMetadata);
+        }
+
+        public TypeMetadata GetByType(Type type)
+        {
+            return _dbContext
+                .Set<TypeMetadata>()
+                .FirstOrDefault(x => x.Type == type);
         }
     }
 }

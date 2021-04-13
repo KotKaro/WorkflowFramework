@@ -31,6 +31,18 @@ namespace Persistence
             builder.RegisterType<TypeMetadataRepository>()
                 .As<ITypeMetadataRepository>()
                 .InstancePerLifetimeScope();
+            
+            builder.RegisterType<StepRepository>()
+                .As<IStepRepository>()
+                .InstancePerLifetimeScope();
+            
+            builder.RegisterType<ExpectationRepository>()
+                .As<IExpectationRepository>()
+                .InstancePerLifetimeScope();
+            
+            builder.RegisterType<ProcessRepository>()
+                .As<IProcessRepository>()
+                .InstancePerLifetimeScope();
         }
     }
 }

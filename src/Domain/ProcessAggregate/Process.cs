@@ -15,9 +15,17 @@ namespace Domain.ProcessAggregate
         public Name Name { get; }
         public IEnumerable<Step> Steps => _steps.ToArray();
 
-        private Process() { }
+        private Process()
+        {
+            _steps ??= new List<Step>();
+        }
         
-        public Process(Name name, ICollection<Step> steps)
+        public Process(Name name) : this()
+        {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+        }
+        
+        public Process(Name name, ICollection<Step> steps) : this(name)
         {
             if (!steps?.Any() ?? true)
             {
@@ -25,7 +33,6 @@ namespace Domain.ProcessAggregate
             }
 
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            _steps = new List<Step>();
 
             foreach (var step in steps)
             {
@@ -59,7 +66,7 @@ namespace Domain.ProcessAggregate
 
             if (stepNavigator == null)
             {
-                throw new StepNavigatorNotFoundException(this, originStep, targetStep);
+                throw new StepNavigatorNotFoundException(originStep, targetStep);
             }
 
             return stepNavigator.CanMove(expectationResolverService, arguments);
@@ -73,6 +80,22 @@ namespace Domain.ProcessAggregate
             }
             
             _steps.Add(step);
+        }
+
+        public void RemoveStep(Step step)
+        {
+            if (step == null)
+            {
+                throw new ArgumentNullException(nameof(step));
+            }
+
+            if (!_steps.Contains(step))
+            {
+                return;
+            }
+            
+            var stepToRemove = _steps.First(x => x.Equals(step));
+            _steps.Remove(stepToRemove);
         }
     }
 }

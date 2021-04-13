@@ -14,9 +14,10 @@ namespace Domain.Common
             return ReferenceEquals(left, null) || left.Equals(right);
         }
 
+        // ReSharper disable once UnusedMember.Global
         protected static bool NotEqualOperator(ValueObject left, ValueObject right)
         {
-            return !(EqualOperator(left, right));
+            return !EqualOperator(left, right);
         }
 
         protected abstract IEnumerable<object> GetEqualityComponents();
@@ -30,7 +31,7 @@ namespace Domain.Common
 
             var other = (ValueObject)obj;
 
-            return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+            return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
         public override int GetHashCode()

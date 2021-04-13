@@ -11,7 +11,6 @@ namespace Persistence.Configurations
         {
             builder.HasMany(x => x.Steps)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Cascade)
                 .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);
             
             builder.OwnsOne(x => x.Name, c =>
