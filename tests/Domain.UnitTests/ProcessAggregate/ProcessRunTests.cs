@@ -31,6 +31,21 @@ namespace Domain.UnitTests.ProcessAggregate
         }
 
         [Fact]
+        public void When_ProcessDoesNotContainStartStep_Expect_ArgumentExceptionThrown()
+        {
+            //Arrange
+            var process = new Process("test");
+            var step = new Step("step");
+
+            //Act + Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                // ReSharper disable once ObjectCreationAsStatement
+                new ProcessRun(process, step);
+            });
+        }
+
+        [Fact]
         public void When_ExpectationsNotMet_Expect_ExpectationsNotMetExceptionThrown()
         {
             //Arrange
@@ -38,8 +53,9 @@ namespace Domain.UnitTests.ProcessAggregate
             var stepTwo = TestDataFactory.CreateStep();
             var stepThree = TestDataFactory.CreateStep();
 
-            var stepNavigator = new StepNavigator(stepTwo, new FalseExpectation(typeof(TestClass)));
-
+            var stepNavigator = new StepNavigator(stepTwo);
+            stepNavigator.AddExpectations(new FalseExpectation(typeof(TestClass)));
+            
             step.AddStepNavigators(stepNavigator);
             stepTwo.AddStepNavigators(new StepNavigator(stepThree));
 
@@ -58,7 +74,7 @@ namespace Domain.UnitTests.ProcessAggregate
             var specificationResolverService = SpecificationResolverServiceFactory.Create(factoryMock.Object);
 
             //Act + Assert
-            Assert.Throws<ExpectationsNotMetExcpetion>(() =>
+            Assert.Throws<ExpectationsNotMetException>(() =>
             {
                 processRun.Move(stepTwo, specificationResolverService);
             });
@@ -72,7 +88,8 @@ namespace Domain.UnitTests.ProcessAggregate
             var stepTwo = TestDataFactory.CreateStep();
             var stepThree = TestDataFactory.CreateStep();
 
-            var stepNavigator = new StepNavigator(stepTwo, new TrueExpectation(typeof(TestClass)));
+            var stepNavigator = new StepNavigator(stepTwo);
+            stepNavigator.AddExpectations(new TrueExpectation(typeof(TestClass)));
 
             step.AddStepNavigators(stepNavigator);
             stepTwo.AddStepNavigators(new StepNavigator(stepThree));
@@ -106,7 +123,8 @@ namespace Domain.UnitTests.ProcessAggregate
             var stepTwo = TestDataFactory.CreateStep();
             var stepThree = TestDataFactory.CreateStep();
 
-            var stepNavigator = new StepNavigator(stepTwo, new TrueExpectation(typeof(TestClass)));
+            var stepNavigator = new StepNavigator(stepTwo);
+            stepNavigator.AddExpectations(new TrueExpectation(typeof(TestClass)));
 
             step.AddStepNavigators(stepNavigator);
             stepTwo.AddStepNavigators(new StepNavigator(stepThree));

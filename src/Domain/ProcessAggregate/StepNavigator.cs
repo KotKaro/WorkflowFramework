@@ -14,16 +14,14 @@ namespace Domain.ProcessAggregate
 
         public IEnumerable<Expectation> Expectations => _expectations.ToArray();
 
-        private StepNavigator() { }
+        private StepNavigator()
+        {
+            _expectations ??= new List<Expectation>();
+        }
         
-        public StepNavigator(Step targetStep)
+        public StepNavigator(Step targetStep) : this()
         {
             TargetStep = targetStep ?? throw new ArgumentNullException(nameof(targetStep));
-        }
-
-        public StepNavigator(Step targetStep, params Expectation[] expectations) : this(targetStep)
-        {
-            AddExpectations(expectations);
         }
 
         public bool CanMove(ExpectationResolverService expectationResolverService, params Argument[] arguments)
@@ -36,13 +34,8 @@ namespace Domain.ProcessAggregate
             return expectationResolverService.Resolve(_expectations.ToArray(), arguments);
         }
         
-        private void AddExpectations(params Expectation[] expectations)
+        public void AddExpectations(params Expectation[] expectations)
         {
-            if (!expectations?.Any() ?? true)
-            {
-                throw new ArgumentException("Intended to create StepNavigator with expectations, but no expectations provided!");
-            }
-
             _expectations ??= new List<Expectation>();
             foreach (var expectation in expectations)
             {

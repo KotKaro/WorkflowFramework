@@ -145,5 +145,43 @@ namespace Application.UnitTests.Commands.AddStepNavigatorToStep
             //Assert
             step.StepNavigators.Count().Should().Be(1);
         }
+        
+        [Fact]
+        public async Task When_StepNotContainStepNavigatorWithTargetStepId_Expect_StepRepositoryCAsyncCalledOnce()
+        {
+            //Arrange
+            var stepId = Guid.NewGuid();
+            var targetStepId = Guid.NewGuid();
+            
+            var stepRepositoryMock = new Mock<IStepRepository>();
+            var stepNavigatorRepositoryMock = new Mock<IStepNavigatorRepository>();
+
+            var step = new Step("test");
+            var targetStep = new Step("targetStep");
+
+            stepRepositoryMock.Setup(x => x.GetByIdAsync(stepId))
+                .ReturnsAsync(step);
+            
+            stepRepositoryMock.Setup(x => x.GetByIdAsync(targetStepId))
+                .ReturnsAsync(targetStep);
+            
+            var sut = new AddStepNavigatorToStepCommandHandler(
+                stepRepositoryMock.Object,
+                stepNavigatorRepositoryMock.Object
+            );
+            
+            //Act
+            await sut.Handle(new AddStepNavigatorToStepCommand
+            {
+                StepId = stepId,
+                TargetStepId = targetStepId
+            }, CancellationToken.None);
+            
+            //Assert
+            stepNavigatorRepositoryMock.Verify(
+                x => x.CreateAsync(It.IsAny<StepNavigator>()),
+                Times.Once
+            );
+        }
     }
 }

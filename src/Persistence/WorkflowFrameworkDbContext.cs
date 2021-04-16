@@ -2,7 +2,7 @@
 
 namespace Persistence
 {
-    public class WorkflowFrameworkDbContext : DbContext
+    public sealed class WorkflowFrameworkDbContext : DbContext
     {
         public WorkflowFrameworkDbContext(DbContextOptions<WorkflowFrameworkDbContext> options) : base(options)
         {

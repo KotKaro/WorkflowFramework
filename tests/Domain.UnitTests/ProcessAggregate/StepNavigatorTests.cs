@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Domain.Common;
 using Domain.ProcessAggregate;
-using Domain.ProcessAggregate.Expectations;
 using Domain.Services;
 using Domain.UnitTests.DataFactories;
 using FluentAssertions;
@@ -32,26 +31,6 @@ namespace Domain.UnitTests.ProcessAggregate
         }
 
         [Fact]
-        public void When_StepNavigatorIntendedToCreateWithExpectationsButExpectationsAreNull_Expect_ArgumentExceptionThrown()
-        {
-            Assert.Throws<ArgumentException>(() =>
-            {
-                // ReSharper disable once ObjectCreationAsStatement
-                new StepNavigator(TestDataFactory.CreateStep(), null);
-            });
-        }
-
-        [Fact]
-        public void When_StepNavigatorIntendedToCreateWithExpectationsButExpectationsListHasNoElement_Expect_ArgumentExceptionThrown()
-        {
-            Assert.Throws<ArgumentException>(() =>
-            {
-                // ReSharper disable once ObjectCreationAsStatement
-                new StepNavigator(TestDataFactory.CreateStep(), Array.Empty<Expectation>());
-            });
-        }
-
-        [Fact]
         public void When_CanMoveCheckForNavigatorWithoutAnyExpectation_Expect_TrueReturned()
         {
             //Arrange
@@ -69,7 +48,8 @@ namespace Domain.UnitTests.ProcessAggregate
         {
             //Arrange
             var expectation = new FalseExpectation(typeof(TestClass));
-            var sut = new StepNavigator(TestDataFactory.CreateStep(), expectation);
+            var sut = new StepNavigator(TestDataFactory.CreateStep());
+            sut.AddExpectations(expectation);
 
             var repositoryMock = new Mock<IRepository>();
             var factoryMock = new Mock<IRepositoryFactory>();

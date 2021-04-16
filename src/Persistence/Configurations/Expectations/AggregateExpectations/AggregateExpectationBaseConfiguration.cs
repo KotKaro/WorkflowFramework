@@ -8,7 +8,7 @@ namespace Persistence.Configurations.Expectations.AggregateExpectations
         public override void Configure(EntityTypeBuilder<TEntity> builder)
         {
             base.Configure(builder);
-            
+
             builder.HasMany(x => x.Expectations);
         }
     }

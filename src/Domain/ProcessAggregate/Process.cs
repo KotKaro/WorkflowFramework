@@ -97,5 +97,10 @@ namespace Domain.ProcessAggregate
             var stepToRemove = _steps.First(x => x.Equals(step));
             _steps.Remove(stepToRemove);
         }
+
+        public bool GotStep(Step step)
+        {
+            return _steps.Contains(step);
+        }
     }
 }

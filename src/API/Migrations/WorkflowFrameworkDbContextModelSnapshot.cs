@@ -171,7 +171,7 @@ namespace API.Migrations
 
                     b.HasIndex("TargetStepId");
 
-                    b.ToTable("StepNavigator");
+                    b.ToTable("StepNavigators");
                 });
 
             modelBuilder.Entity("Domain.ProcessAggregate.TypeMetadata", b =>
@@ -182,7 +182,7 @@ namespace API.Migrations
 
                     b.HasKey("Type");
 
-                    b.ToTable("TypeMetadata");
+                    b.ToTable("TypeMetadatas");
                 });
 
             modelBuilder.Entity("Domain.ProcessAggregate.Expectations.AggregateExpectations.AndExpectation", b =>
@@ -380,8 +380,7 @@ namespace API.Migrations
                 {
                     b.HasOne("Domain.ProcessAggregate.Process", null)
                         .WithMany("Steps")
-                        .HasForeignKey("ProcessId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProcessId");
 
                     b.OwnsOne("Domain.Common.ValueObjects.Name", "Name", b1 =>
                         {

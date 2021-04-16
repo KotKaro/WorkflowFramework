@@ -27,4 +27,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Commands\CompareExpectation\CompareExpectation" />
+    </ItemGroup>
+
 </Project>

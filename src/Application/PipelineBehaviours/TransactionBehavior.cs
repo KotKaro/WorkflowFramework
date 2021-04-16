@@ -18,7 +18,6 @@ namespace Application.PipelineBehaviours
         {
             var response = await next();
             await _unitOfWork.SaveAsync();                
-
             return response;
         }
     }

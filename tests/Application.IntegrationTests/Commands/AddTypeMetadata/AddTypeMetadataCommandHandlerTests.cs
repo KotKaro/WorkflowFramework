@@ -11,27 +11,17 @@ using Xunit;
 namespace Application.IntegrationTests.Commands.AddTypeMetadata
 {
     [Collection(nameof(TestCollections.ApplicationIntegrationCollection))]
-    public class AddTypeMetadataCommandHandlerTests
+    public class AddTypeMetadataCommandHandlerTests : CommandTestBase
     {
-        private readonly ApplicationFixture _applicationFixture;
-
-        public AddTypeMetadataCommandHandlerTests(ApplicationFixture applicationFixture)
+        public AddTypeMetadataCommandHandlerTests(ApplicationFixture applicationFixture) : base(applicationFixture)
         {
-            _applicationFixture = applicationFixture;
-            
-            var context = _applicationFixture.Host.Services.GetService(typeof(WorkflowFrameworkDbContext)) as WorkflowFrameworkDbContext;
-
-            context!.Set<MemberDescriptor>().RemoveRange( context!.Set<MemberDescriptor>());
-            context!.Set<ValueAccessor>().RemoveRange( context!.Set<ValueAccessor>());
-            context!.Set<TypeMetadata>().RemoveRange( context!.Set<TypeMetadata>());
-            context!.SaveChanges();  
         }
         
         [Fact]
         public void When_IncorrectDataProvided_Expect_ValidationExceptionThrown()
         {
             //Arrange
-            var mediator = _applicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
+            var mediator = ApplicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
 
             //Act + Assert
             Assert.ThrowsAsync<ValidationException>(async () =>
@@ -48,8 +38,7 @@ namespace Application.IntegrationTests.Commands.AddTypeMetadata
         public async Task When_CorrectDataProvided_Expect_TypeMetadataAddedToDatabase()
         {
             //Arrange
-            var mediator = _applicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
-            var context = _applicationFixture.Host.Services.GetService(typeof(WorkflowFrameworkDbContext)) as WorkflowFrameworkDbContext;
+            var mediator = ApplicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
 
             //Act
             await mediator!.Send(new CreateTypeMetadataCommand
@@ -59,6 +48,7 @@ namespace Application.IntegrationTests.Commands.AddTypeMetadata
             });
             
             //Assert
+            var context = ApplicationFixture.Host.Services.GetService(typeof(WorkflowFrameworkDbContext)) as WorkflowFrameworkDbContext;
             context!.Set<TypeMetadata>().Count().Should().Be(1);
         }
     }

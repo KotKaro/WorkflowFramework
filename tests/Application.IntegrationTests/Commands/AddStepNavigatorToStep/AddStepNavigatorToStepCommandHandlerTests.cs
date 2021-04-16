@@ -8,35 +8,22 @@ using Domain.Repositories;
 using FluentAssertions;
 using FluentValidation;
 using MediatR;
-using Persistence;
 using Xunit;
 
 namespace Application.IntegrationTests.Commands.AddStepNavigatorToStep
 {
     [Collection(nameof(TestCollections.ApplicationIntegrationCollection))]
-    public class AddStepNavigatorToStepCommandHandlerTests
+    public class AddStepNavigatorToStepCommandHandlerTests : CommandTestBase
     {
-        private readonly ApplicationFixture _applicationFixture;
-        private readonly WorkflowFrameworkDbContext _context;
-        
-        public AddStepNavigatorToStepCommandHandlerTests(ApplicationFixture applicationFixture)
+        public AddStepNavigatorToStepCommandHandlerTests(ApplicationFixture applicationFixture) : base(applicationFixture)
         {
-            _applicationFixture = applicationFixture;
-
-            _context =
-                _applicationFixture.Host.Services.GetService(typeof(WorkflowFrameworkDbContext)) as
-                    WorkflowFrameworkDbContext;
-
-            _context!.Set<StepNavigator>().RemoveRange(_context!.Set<StepNavigator>());
-            _context!.Set<Step>().RemoveRange(_context!.Set<Step>());
-            _context!.SaveChanges();
         }
         
         [Fact]
         public async Task When_InvalidCommandPassed_Expect_ValidationExceptionThrown()
         {
             //Arrange
-            var mediator = _applicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
+            var mediator = ApplicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
 
             //Act + Assert
             await Assert.ThrowsAsync<ValidationException>(async () =>
@@ -56,11 +43,11 @@ namespace Application.IntegrationTests.Commands.AddStepNavigatorToStep
             var step = new Step("step");
             var targetStep = new Step("targetStep");
             
-            var mediator = _applicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
+            var mediator = ApplicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
 
-            await _context.AddAsync(step);
-            await _context.AddAsync(targetStep);
-            await _context.SaveChangesAsync();
+            await Context.AddAsync(step);
+            await Context.AddAsync(targetStep);
+            await Context.SaveChangesAsync();
 
             //Act
             await mediator!.Send(new AddStepNavigatorToStepCommand
@@ -71,7 +58,7 @@ namespace Application.IntegrationTests.Commands.AddStepNavigatorToStep
             
             //Assert
             var stepRepository =
-                _applicationFixture.Host.Services.GetService(typeof(IStepRepository)) as IStepRepository;
+                ApplicationFixture.Host.Services.GetService(typeof(IStepRepository)) as IStepRepository;
 
             var stepFromDb = await stepRepository!.GetByIdAsync(step.Id);
 

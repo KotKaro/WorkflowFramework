@@ -201,5 +201,35 @@ namespace Domain.UnitTests.ProcessAggregate
             //Assert
             process.Steps.Count().Should().Be(0);
         }
+
+        [Fact]
+        public void When_GotStepCalledAndStepInProcess_Expect_ResultIsTrue()
+        {
+            //Arrange
+            var process = new Process("test");
+            var step = new Step("test");
+            
+            process.AddStep(step);
+
+            //Act
+            var result = process.GotStep(step);
+            
+            //Assert
+            result.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void When_GotStepCalledAndStepNotInProcess_Expect_ResultIsFalse()
+        {
+            //Arrange
+            var process = new Process("test");
+            var step = new Step("test");
+
+            //Act
+            var result = process.GotStep(step);
+            
+            //Assert
+            result.Should().BeFalse();
+        }
     }
 }

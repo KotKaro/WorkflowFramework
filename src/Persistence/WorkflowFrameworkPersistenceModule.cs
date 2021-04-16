@@ -15,11 +15,7 @@ namespace Persistence
                 .As<DbContextOptions>()
                 .InstancePerLifetimeScope();
             
-            builder.Register(ctx => new WorkflowFrameworkDbContext(ctx.Resolve<DbContextOptions<WorkflowFrameworkDbContext>>()))
-                .AsSelf()
-                .InstancePerLifetimeScope();
-            
-            builder.Register(ctx => new WorkflowFrameworkDbContext(ctx.Resolve<DbContextOptions<WorkflowFrameworkDbContext>>()))
+            builder.RegisterType<WorkflowFrameworkDbContext>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
             

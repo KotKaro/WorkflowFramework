@@ -13,12 +13,14 @@ namespace Domain.ProcessAggregate
         public Name Name { get; }
         public IEnumerable<StepNavigator> StepNavigators => _stepNavigators.AsEnumerable();
 
-        private Step() { }
+        private Step()
+        {
+            _stepNavigators ??= new List<StepNavigator>();
+        }
         
-        public Step(Name name)
+        public Step(Name name) : this()
         {
             Name = name ?? throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace", nameof(name));
-            _stepNavigators = new List<StepNavigator>();
         }
 
         public Step(Name name, params StepNavigator[] stepNavigators) : this(name)
@@ -52,6 +54,16 @@ namespace Domain.ProcessAggregate
         public bool GotStepNavigatorWithTargetStepId(Guid id)
         {
             return _stepNavigators.Any(x => x.TargetStep.Id == id);
+        }
+
+        public void RemoveStepNavigator(StepNavigator stepNavigator)
+        {
+            var stepNavigatorFromList = _stepNavigators.FirstOrDefault(x => x.Equals(stepNavigator));
+
+            if (stepNavigatorFromList != null)
+            {
+                _stepNavigators.Remove(stepNavigatorFromList);
+            }
         }
     }
 }

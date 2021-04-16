@@ -14,7 +14,7 @@ namespace Persistence.Repositories
         
         public async Task CreateAsync(TypeMetadata typeMetadata)
         {
-            await Context.AddAsync(typeMetadata);
+            await Context.Set<TypeMetadata>().AddAsync(typeMetadata);
         }
 
         public void Remove(TypeMetadata typeMetadata)

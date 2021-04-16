@@ -20,6 +20,14 @@ namespace Domain.ProcessAggregate
         {
             Process = process ?? throw new ArgumentNullException(nameof(process));
             CurrentStep = startStep ?? throw new ArgumentNullException(nameof(startStep));
+
+            if (!process.GotStep(CurrentStep))
+            {
+                throw new ArgumentException(
+                    $"Process with ID: {process.Id} - does not contain step with ID: {CurrentStep.Id}")
+                ;
+            }
+            
             Arguments = arguments;
         }
 
@@ -32,7 +40,7 @@ namespace Domain.ProcessAggregate
         {
             if (!CanMove(targetStep, expectationResolverService))
             {
-                throw new ExpectationsNotMetExcpetion(CurrentStep, targetStep);
+                throw new ExpectationsNotMetException(CurrentStep, targetStep);
             }
 
             CurrentStep = targetStep;
