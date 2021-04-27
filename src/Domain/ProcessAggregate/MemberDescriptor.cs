@@ -6,10 +6,11 @@ namespace Domain.ProcessAggregate
     public class MemberDescriptor : Entity
     {
         public string Name { get; private set; }
-        
+        public Type Type { get; private set; }
+
         protected MemberDescriptor() { }
         
-        public MemberDescriptor(string name)
+        public MemberDescriptor(string name, Type type)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -17,6 +18,7 @@ namespace Domain.ProcessAggregate
             }
             
             Name = name;
+            Type = type ?? throw new ArgumentNullException(nameof(type));
         }
     }
 }

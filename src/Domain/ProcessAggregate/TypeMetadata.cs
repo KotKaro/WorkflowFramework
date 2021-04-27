@@ -51,19 +51,19 @@ namespace Domain.ProcessAggregate
                 .Where(x => !x.IsSpecialName)
                 .Select(x =>
                 {
-                    var arguments = x.GetParameters().Select(y => new MemberDescriptor(y.Name))
+                    var arguments = x.GetParameters().Select(y => new MemberDescriptor(y.Name, y.ParameterType))
                         .ToArray();
 
-                    return new ValueAccessor(x.Name, Type, arguments);
+                    return new ValueAccessor(x.Name, Type, x.ReturnType, arguments);
                 });
         }
 
         private IEnumerable<ValueAccessor> GetPropertiesValueAccessors()
         {
             return Type.GetProperties(PublicInstanceBindingFlags)
-                .Select(x => new ValueAccessor(x.Name, Type));
+                .Select(x => new ValueAccessor(x.Name, Type, x.PropertyType));
         }
-        
+
         private void InitializeValueAccessors()
         {
             _valueAccessors = new List<ValueAccessor>();

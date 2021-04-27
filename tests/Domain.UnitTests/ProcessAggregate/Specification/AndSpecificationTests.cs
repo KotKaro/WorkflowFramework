@@ -73,7 +73,7 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             //Arrange
             var metadata = new TypeMetadata(typeof(TestClass));
 
-            var differentTypeValueAccessor = new ValueAccessor("wrong", typeof(Type));
+            var differentTypeValueAccessor = new ValueAccessor("wrong", typeof(Type), typeof(Type));
             var getHelloMethodValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.GetHello));
             
             var propertyEqualSpecification = new EqualExpectation(differentTypeValueAccessor, "test");

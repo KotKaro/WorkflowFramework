@@ -83,8 +83,7 @@ namespace Domain.UnitTests.ProcessAggregate
                 Name = "test"
             };
 
-            var notExistingValueAccessor = new ValueAccessor("prop", typeof(TestClass));
-
+            var notExistingValueAccessor = new ValueAccessor("prop", typeof(TestClass), typeof(TestClass));
 
             //Act + Assert
             Assert.Throws<ValueNotReachableException>(() => { notExistingValueAccessor.GetValue(testClass); });
@@ -99,8 +98,12 @@ namespace Domain.UnitTests.ProcessAggregate
                 Name = "test"
             };
 
-            var notExistingValueAccessor =
-                new ValueAccessor("prop", typeof(TestClass), new MemberDescriptor("test"));
+            var notExistingValueAccessor = new ValueAccessor(
+                "prop",
+                typeof(TestClass),
+                typeof(TestClass),
+                new MemberDescriptor("test", GetType())
+            );
 
             //Act + Assert
             Assert.Throws<ValueNotReachableException>(() => { notExistingValueAccessor.GetValue(testClass); });
@@ -123,7 +126,7 @@ namespace Domain.UnitTests.ProcessAggregate
 
             var value = getHelloValueAccessor
                 .GetValue(testClass, new Argument(methodArguments.ElementAt(0), "karol"),
-                    new Argument(new MemberDescriptor("no_existing_one"), "karol"));
+                    new Argument(new MemberDescriptor("no_existing_one", typeof(string)), "karol"));
 
             //Assert
             value.GetType().Should().Be<string>();

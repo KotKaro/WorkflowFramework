@@ -19,7 +19,11 @@ namespace Application.UnitTests.Commands.AddExpectation.AggregateExpectation
             out StepNavigator stepNavigator
         )
         {
-            var valueAccessor = new ValueAccessor("test", typeof(AddEqualExpectationCommandHandlerTests));
+            var valueAccessor = new ValueAccessor(
+                "test",
+                typeof(AddEqualExpectationCommandHandlerTests),
+                typeof(AddEqualExpectationCommandHandlerTests)
+            );
             stepNavigator = new StepNavigator(new Step("test"));
             
             stepNavigatorRepositoryMock = new Mock<IStepNavigatorRepository>();

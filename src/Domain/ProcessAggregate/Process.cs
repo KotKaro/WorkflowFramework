@@ -102,5 +102,16 @@ namespace Domain.ProcessAggregate
         {
             return _steps.Contains(step);
         }
+
+        public Step GetStep(Guid stepId)
+        {
+            return Steps.FirstOrDefault(x => x.Id == stepId) 
+                   ?? throw new StepNotInProcessException(this, stepId);
+        }
+
+        public bool GotStep(Guid stepId)
+        {
+            return _steps.Any(x => x.Id == stepId);
+        }
     }
 }

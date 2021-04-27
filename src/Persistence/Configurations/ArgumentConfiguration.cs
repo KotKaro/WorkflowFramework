@@ -11,10 +11,6 @@ namespace Persistence.Configurations
             builder.Property(x => x.ValueString)
                 .HasColumnName(nameof(Argument.ValueString));
 
-            builder.Property(x => x.ValueType)
-                .HasColumnName(nameof(Argument.ValueType))
-                .HasConversion(ConverterFactory.CreateTypeToStringConverter());
-
             builder.HasOne(x => x.MemberDescriptor);
         }
     }

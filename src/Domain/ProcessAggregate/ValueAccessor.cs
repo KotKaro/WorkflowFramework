@@ -11,14 +11,22 @@ namespace Domain.ProcessAggregate
     {
         private const BindingFlags PublicInstanceBindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
+        public string Name { get; private set; }
         public Type OwningType { get; private set; }
+        public Type ReturnType { get; private set; }
         public IReadOnlyCollection<MemberDescriptor> MethodArguments { get; private set; }
         private ValueAccessor() { }
 
-        public ValueAccessor(string name, Type owningType, params MemberDescriptor[] methodArguments)
-            : base(name)
+        public ValueAccessor(string name, Type owningType, Type returnType, params MemberDescriptor[] methodArguments) : base(name, returnType)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+            }
+            
+            Name = name;
             OwningType = owningType;
+            ReturnType = returnType;
             MethodArguments = methodArguments;
         }
 

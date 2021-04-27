@@ -20,7 +20,7 @@ namespace Application.UnitTests.Commands.AddExpectation.AggregateExpectation.Add
         public async Task When_StepNavigatorExistsAndAllExpectationsExists_Expect_AddedExpectationIsOrExpectation()
         {
             var expectations = Enumerable.Range(0, 100)
-                .Select(_ => new EqualExpectation(new ValueAccessor("test", GetType()), "test"))
+                .Select(_ => new EqualExpectation(new ValueAccessor("test", GetType(), GetType()), "test"))
                 .ToArray();
 
             var handler = CreateHandler(
