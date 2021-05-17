@@ -8,15 +8,15 @@ namespace Application.Commands.AddExpectation.CompareExpectation.AddBiggerThanEx
     {
         public AddBiggerThanExpectationCommandHandler(
             IStepNavigatorRepository stepNavigatorRepository,
-            IValueAccessorRepository valueAccessorRepository,
+            IValueProviderRepository valueProviderRepository,
             IExpectationRepository expectationRepository
-        ) : base(stepNavigatorRepository, valueAccessorRepository, expectationRepository)
+        ) : base(stepNavigatorRepository, valueProviderRepository, expectationRepository)
         {
         }
 
-        protected override BiggerThanExpectation CreateExpectation(AddBiggerThanExpectationCommand request, ValueAccessor valueAccessor)
+        protected override BiggerThanExpectation CreateExpectation(AddBiggerThanExpectationCommand request, ValueProvider valueProvider)
         {
-            return new(valueAccessor, request.Value);
+            return new(valueProvider, request.Value);
         }
     }
 }

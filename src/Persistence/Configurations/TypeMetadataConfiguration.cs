@@ -14,7 +14,7 @@ namespace Persistence.Configurations
 
             builder.HasKey(x => x.Type);
 
-            builder.HasMany(x => x.ValueAccessors)
+            builder.HasMany(x => x.ValueProviders)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade)
                 .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);

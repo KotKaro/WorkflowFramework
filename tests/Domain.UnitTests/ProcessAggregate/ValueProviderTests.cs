@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Domain.UnitTests.ProcessAggregate
 {
-    public class ValueAccessorTests
+    public class ValueProviderTests
     {
         [Fact]
         public void When_GetValueCalledForProperty_Expect_PropertyValueToBeReturned()
@@ -21,7 +21,7 @@ namespace Domain.UnitTests.ProcessAggregate
             var typeMetadata = new TypeMetadata(testClass.GetType());
 
             //Act
-            var value = typeMetadata.ValueAccessors.ElementAt(0).GetValue(testClass);
+            var value = typeMetadata.ValueProviders.ElementAt(0).GetValue(testClass);
 
             //Assert
             value.GetType().Should().Be<string>();
@@ -38,7 +38,7 @@ namespace Domain.UnitTests.ProcessAggregate
             };
 
             var typeMetadata = new TypeMetadata(testClass.GetType());
-            var sut = typeMetadata.ValueAccessors.First(x => x.Name == nameof(TestClass.GetHello));
+            var sut = typeMetadata.ValueProviders.First(x => x.Name == nameof(TestClass.GetHello));
             var methodArguments = sut.MethodArguments;
             
             //Act
@@ -61,13 +61,13 @@ namespace Domain.UnitTests.ProcessAggregate
             };
 
             var typeMetadata = new TypeMetadata(testClass.GetType());
-            var getHelloValueAccessor = typeMetadata.ValueAccessors.Last(x => x.Name == nameof(TestClass.GetHello));
-            var methodArguments = getHelloValueAccessor.MethodArguments;
+            var getHelloValueProvider = typeMetadata.ValueProviders.Last(x => x.Name == nameof(TestClass.GetHello));
+            var methodArguments = getHelloValueProvider.MethodArguments;
             var firstMethodArgument = new Argument(methodArguments.ElementAt(0), "karol");
             var secondMethodArgument = new Argument(methodArguments.ElementAt(1), 123);
             
             //Act
-            var value = getHelloValueAccessor
+            var value = getHelloValueProvider
                 .GetValue(testClass, secondMethodArgument, firstMethodArgument);
 
             //Assert
@@ -75,7 +75,7 @@ namespace Domain.UnitTests.ProcessAggregate
         }
 
         [Fact]
-        public void When_ParameterNotFoundInProvidedInstance_ExpectValueAccessorNotFoundException()
+        public void When_ParameterNotFoundInProvidedInstance_ExpectValueProviderNotFoundException()
         {
             //Arrange
             var testClass = new TestClass
@@ -83,14 +83,14 @@ namespace Domain.UnitTests.ProcessAggregate
                 Name = "test"
             };
 
-            var notExistingValueAccessor = new ValueAccessor("prop", typeof(TestClass), typeof(TestClass));
+            var notExistingValueProvider = new ValueProvider("prop", typeof(TestClass), typeof(TestClass));
 
             //Act + Assert
-            Assert.Throws<ValueNotReachableException>(() => { notExistingValueAccessor.GetValue(testClass); });
+            Assert.Throws<ValueNotReachableException>(() => { notExistingValueProvider.GetValue(testClass); });
         }
 
         [Fact]
-        public void When_MethodNotFoundInProvidedInstance_ExpectValueAccessorNotFoundException()
+        public void When_MethodNotFoundInProvidedInstance_ExpectValueProviderNotFoundException()
         {
             //Arrange
             var testClass = new TestClass
@@ -98,7 +98,7 @@ namespace Domain.UnitTests.ProcessAggregate
                 Name = "test"
             };
 
-            var notExistingValueAccessor = new ValueAccessor(
+            var notExistingValueProvider = new ValueProvider(
                 "prop",
                 typeof(TestClass),
                 typeof(TestClass),
@@ -106,7 +106,7 @@ namespace Domain.UnitTests.ProcessAggregate
             );
 
             //Act + Assert
-            Assert.Throws<ValueNotReachableException>(() => { notExistingValueAccessor.GetValue(testClass); });
+            Assert.Throws<ValueNotReachableException>(() => { notExistingValueProvider.GetValue(testClass); });
         }
 
         [Fact]
@@ -119,12 +119,12 @@ namespace Domain.UnitTests.ProcessAggregate
             };
 
             var typeMetadata = new TypeMetadata(testClass.GetType());
-            var getHelloValueAccessor = typeMetadata.ValueAccessors.First(x => x.Name == nameof(TestClass.GetHello));
+            var getHelloValueProviders = typeMetadata.ValueProviders.First(x => x.Name == nameof(TestClass.GetHello));
 
             //Act
-            var methodArguments = getHelloValueAccessor.MethodArguments;
+            var methodArguments = getHelloValueProviders.MethodArguments;
 
-            var value = getHelloValueAccessor
+            var value = getHelloValueProviders
                 .GetValue(testClass, new Argument(methodArguments.ElementAt(0), "karol"),
                     new Argument(new MemberDescriptor("no_existing_one", typeof(string)), "karol"));
 
@@ -143,10 +143,10 @@ namespace Domain.UnitTests.ProcessAggregate
             };
 
             var typeMetadata = new TypeMetadata(testClass.GetType());
-            var getHelloValueAccessor = typeMetadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Name));
+            var getHelloValueProvider = typeMetadata.ValueProviders.First(x => x.Name == nameof(TestClass.Name));
 
             //Act
-            var value = getHelloValueAccessor
+            var value = getHelloValueProvider
                 .GetValue(null);
 
             //Assert

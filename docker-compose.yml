@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: WorkflowFramework.API
+    build:
+      context: .
+      dockerfile: src/API/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_URLS=http://+:443
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=test
+    ports:
+      - 44398:443
+    depends_on:
+      - database
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+
+  webappdotnet:
+    container_name: webapp-dotnet
+    build:
+      context: src/WebApp
+      dockerfile: Dockerfile
+      args:
+        - skip_client_build=true
+    restart: always
+    depends_on:
+      - database
+      - api
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 5000:80
+        
+  webappangular:
+    container_name: webapp-angular
+    build:
+      context: .
+      dockerfile: src/WebApp/ClientApp/Dockerfile
+    volumes:
+      - ./src/WebApp/ClientApp:/app
+      
+  database:
+    container_name: WorkflowFramework.Database
+    restart: always
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      SA_PASSWORD: Jko3va-D9821jhsvGD
+      ACCEPT_EULA: "Y"
+    ports:
+      - 50001:1433
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+volumes:
+  mssql-data:

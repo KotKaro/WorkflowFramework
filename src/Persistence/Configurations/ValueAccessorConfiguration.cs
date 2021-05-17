@@ -4,21 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations
 {
-    public class ValueAccessorConfiguration : IEntityTypeConfiguration<ValueAccessor>
+    public class ValueProviderConfiguration : MemberDescriptorBaseConfiguration<ValueProvider>
     {
-        public void Configure(EntityTypeBuilder<ValueAccessor> builder)
+        public override void Configure(EntityTypeBuilder<ValueProvider> builder)
         {
+            base.Configure(builder);
+
             builder.HasMany(x => x.MethodArguments);
-            
-            builder.Property(x => x.Name)
-                .HasColumnName(nameof(ValueAccessor.Name));
 
             builder.Property(x => x.OwningType)
-                .HasColumnName(nameof(ValueAccessor.OwningType))
-                .HasConversion(ConverterFactory.CreateTypeToStringConverter());
-            
-            builder.Property(x => x.ReturnType)
-                .HasColumnName(nameof(ValueAccessor.ReturnType))
+                .HasColumnName(nameof(ValueProvider.OwningType))
                 .HasConversion(ConverterFactory.CreateTypeToStringConverter());
         }
     }

@@ -37,7 +37,7 @@ namespace Application.UnitTests.Commands.RemoveExpectation
             var sut = CreateHandler(out var expectationRepositoryMock);
 
             expectationRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new EqualExpectation(new ValueAccessor("test", GetType(), GetType()), "test"));
+                .ReturnsAsync(new EqualExpectation(new ValueProvider("test", GetType(), GetType()), "test"));
 
             //Act
             await sut.Handle(new RemoveExpectationCommand

@@ -13,17 +13,17 @@ namespace Application.Commands.AddExpectation.CompareExpectation
         where TCommand : AddCompareExpectationCommand
     {
         private readonly IStepNavigatorRepository _stepNavigatorRepository;
-        private readonly IValueAccessorRepository _valueAccessorRepository;
+        private readonly IValueProviderRepository _valueProviderRepository;
         private readonly IExpectationRepository _expectationRepository;
 
         protected AddCompareExpectationCommandHandlerBase(
             IStepNavigatorRepository stepNavigatorRepository,
-            IValueAccessorRepository valueAccessorRepository,
+            IValueProviderRepository valueProviderRepository,
             IExpectationRepository expectationRepository
         )
         {
             _stepNavigatorRepository = stepNavigatorRepository;
-            _valueAccessorRepository = valueAccessorRepository;
+            _valueProviderRepository = valueProviderRepository;
             _expectationRepository = expectationRepository;
         }
 
@@ -36,14 +36,14 @@ namespace Application.Commands.AddExpectation.CompareExpectation
                 throw new ObjectNotFoundException(request.StepNavigatorId, typeof(StepNavigator));
             }
 
-            var valueAccessor = await _valueAccessorRepository.GetByIdAsync(request.ValueAccessorId);
+            var ValueProvider = await _valueProviderRepository.GetByIdAsync(request.ValueProviderId);
 
-            if (valueAccessor is null)
+            if (ValueProvider is null)
             {
-                throw new ObjectNotFoundException(request.ValueAccessorId, typeof(ValueAccessor));
+                throw new ObjectNotFoundException(request.ValueProviderId, typeof(ValueProvider));
             }
 
-            var expectation = CreateExpectation(request, valueAccessor);
+            var expectation = CreateExpectation(request, ValueProvider);
 
             await _expectationRepository.CreateAsync(expectation);
             stepNavigator.AddExpectations(expectation);
@@ -53,7 +53,7 @@ namespace Application.Commands.AddExpectation.CompareExpectation
 
         protected abstract Expectation CreateExpectation(
             TCommand request,
-            ValueAccessor valueAccessor
+            ValueProvider valueProvider
         );
     }
 }

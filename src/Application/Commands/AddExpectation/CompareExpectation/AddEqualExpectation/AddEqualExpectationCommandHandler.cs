@@ -8,15 +8,15 @@ namespace Application.Commands.AddExpectation.CompareExpectation.AddEqualExpecta
     {
         public AddEqualExpectationCommandHandler(
             IStepNavigatorRepository stepNavigatorRepository,
-            IValueAccessorRepository valueAccessorRepository,
+            IValueProviderRepository valueProviderRepository,
             IExpectationRepository expectationRepository
-        ) : base(stepNavigatorRepository, valueAccessorRepository, expectationRepository)
+        ) : base(stepNavigatorRepository, valueProviderRepository, expectationRepository)
         {
         }
 
-        protected override EqualExpectation CreateExpectation(AddEqualExpectationCommand request, ValueAccessor valueAccessor)
+        protected override EqualExpectation CreateExpectation(AddEqualExpectationCommand request, ValueProvider valueProvider)
         {
-            return new(valueAccessor, request.Value);
+            return new(valueProvider, request.Value);
         }
     }
 }

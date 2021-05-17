@@ -17,14 +17,13 @@ namespace API
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
         
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -42,15 +41,13 @@ namespace API
             }
  
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            ApplyWorkflowDbContextMigrations(app);
         }
-        
-        // ReSharper disable once UnusedMember.Global
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
             var connectionString = Configuration.GetConnectionString("database");
@@ -82,6 +79,13 @@ namespace API
 
             builder.RegisterModule<WorkflowFrameworkPersistenceModule>();
             builder.RegisterModule<WorkflowFrameworkApplicationModule>();
+        }
+        
+        private static void ApplyWorkflowDbContextMigrations(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<WorkflowFrameworkDbContext>();
+            context!.Database.Migrate();
         }
     }
 }

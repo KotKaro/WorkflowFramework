@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.ProcessAggregate;
 
@@ -8,5 +9,6 @@ namespace Domain.Repositories
     {
         Task CreateAsync(Process process);
         Task<Process> GetByIdAsync(Guid id);
+        IEnumerable<Process> GetAll();
     }
 }

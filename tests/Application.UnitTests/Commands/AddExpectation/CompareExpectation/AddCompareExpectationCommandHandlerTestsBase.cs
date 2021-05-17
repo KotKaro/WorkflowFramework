@@ -15,12 +15,12 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation
     {
         protected THandler CreateHandler(
             out Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock,
-            out Mock<IValueAccessorRepository> valueAccessorRepositoryMock,
+            out Mock<IValueProviderRepository> valueProviderRepositoryMock,
             out Mock<IExpectationRepository> expectationRepository,
             out StepNavigator stepNavigator
         )
         {
-            var valueAccessor = new ValueAccessor(
+            var ValueProvider = new ValueProvider(
                 "test",
                 typeof(AddEqualExpectationCommandHandlerTests),
                 typeof(AddEqualExpectationCommandHandlerTests)
@@ -28,24 +28,24 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation
             stepNavigator = new StepNavigator(new Step("test"));
             
             stepNavigatorRepositoryMock = new Mock<IStepNavigatorRepository>();
-            valueAccessorRepositoryMock = new Mock<IValueAccessorRepository>();
+            valueProviderRepositoryMock = new Mock<IValueProviderRepository>();
             expectationRepository = new Mock<IExpectationRepository>();
 
             stepNavigatorRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(stepNavigator);
 
-            valueAccessorRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(valueAccessor);
+            valueProviderRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(ValueProvider);
 
             expectationRepository.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new EqualExpectation(valueAccessor, "test"));
+                .ReturnsAsync(new EqualExpectation(ValueProvider, "test"));
 
-            return CreateHandler(stepNavigatorRepositoryMock, valueAccessorRepositoryMock, expectationRepository);
+            return CreateHandler(stepNavigatorRepositoryMock, valueProviderRepositoryMock, expectationRepository);
         }
 
         protected abstract THandler CreateHandler(
             Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock,
-            Mock<IValueAccessorRepository> valueAccessorRepositoryMock,
+            Mock<IValueProviderRepository> valueProviderRepositoryMock,
             Mock<IExpectationRepository> expectationRepository
         );
     }

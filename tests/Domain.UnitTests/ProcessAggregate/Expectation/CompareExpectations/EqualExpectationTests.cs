@@ -4,9 +4,9 @@ using Domain.ProcessAggregate.Expectations.CompareExpectations;
 using FluentAssertions;
 using Xunit;
 
-namespace Domain.UnitTests.ProcessAggregate.Specification
+namespace Domain.UnitTests.ProcessAggregate.Expectation.CompareExpectations
 {
-    public class EqualSpecificationTests
+    public class EqualExpectationTests
     {
         [Fact]
         public void When_EqualSpecificationAppliedForEqualPropertyValues_Expect_TrueResult()
@@ -18,9 +18,9 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             var metadata = new TypeMetadata(typeof(TestClass));
 
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Name));
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Name));
             
-            var equalSpecification = new EqualExpectation(namePropertyValueAccessor, "test");
+            var equalSpecification = new EqualExpectation(namePropertyValueProvider, "test");
 
             //Act
             var result = equalSpecification.Apply(instance);
@@ -36,12 +36,12 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             var instance = new TestClass();
             var metadata = new TypeMetadata(typeof(TestClass));
 
-            var getHelloValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.GetHello));
+            var getHelloValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.GetHello));
             
-            var equalSpecification = new EqualExpectation(getHelloValueAccessor, "Hello test");
+            var equalSpecification = new EqualExpectation(getHelloValueProvider, "Hello test");
 
             //Act
-            var argument = new Argument(getHelloValueAccessor.MethodArguments.ElementAt(0), "test");
+            var argument = new Argument(getHelloValueProvider.MethodArguments.ElementAt(0), "test");
             var result = equalSpecification.Apply(instance, argument);
 
             //Assert
@@ -58,9 +58,9 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             var metadata = new TypeMetadata(typeof(TestClass));
 
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Name));
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Name));
             
-            var equalSpecification = new EqualExpectation(namePropertyValueAccessor, "false-test");
+            var equalSpecification = new EqualExpectation(namePropertyValueProvider, "false-test");
 
             //Act
             var result = equalSpecification.Apply(instance);

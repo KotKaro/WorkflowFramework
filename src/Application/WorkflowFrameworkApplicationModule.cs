@@ -1,6 +1,7 @@
 using System.Reflection;
 using Application.PipelineBehaviours;
 using Autofac;
+using AutoMapper.Contrib.Autofac.DependencyInjection;
 using FluentValidation;
 using MediatR;
 using MediatR.Extensions.Autofac.DependencyInjection;
@@ -34,6 +35,8 @@ namespace Application
                 .AsClosedTypesOf(typeof(IValidator<>))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterAutoMapper(ThisAssembly);
         }
 
         protected override Assembly ThisAssembly => GetType().Assembly;

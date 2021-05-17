@@ -4,8 +4,8 @@ using Domain.ProcessAggregate;
 
 namespace Domain.Repositories
 {
-    public interface IValueAccessorRepository
+    public interface IValueProviderRepository
     {
-        Task<ValueAccessor> GetByIdAsync(Guid id);
+        Task<ValueProvider> GetByIdAsync(Guid id);
     }
 }

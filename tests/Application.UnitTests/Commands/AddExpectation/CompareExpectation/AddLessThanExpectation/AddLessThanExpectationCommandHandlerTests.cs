@@ -27,7 +27,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddLe
             //Act
             await sut.Handle(new AddLessThanExpectationCommand
             {
-                ValueAccessorId = Guid.NewGuid(),
+                ValueProviderId = Guid.NewGuid(),
                 StepNavigatorId = Guid.NewGuid(),
                 Value = "test"
             }, CancellationToken.None);
@@ -36,12 +36,12 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddLe
             stepNavigator.Expectations.First().GetType().Should().Be(typeof(LessThanExpectation));
         }
 
-        protected override AddLessThanExpectationCommandHandler CreateHandler(Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock, Mock<IValueAccessorRepository> valueAccessorRepositoryMock,
+        protected override AddLessThanExpectationCommandHandler CreateHandler(Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock, Mock<IValueProviderRepository> valueProviderRepositoryMock,
             Mock<IExpectationRepository> expectationRepository)
         {
             return new(
                 stepNavigatorRepositoryMock.Object,
-                valueAccessorRepositoryMock.Object,
+                valueProviderRepositoryMock.Object,
                 expectationRepository.Object
             );
         }

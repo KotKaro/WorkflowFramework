@@ -8,8 +8,14 @@ namespace Persistence.Configurations.Expectations
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            builder.Property<string>("DescribedTypeFullName")
-                .HasColumnName("DescribedTypeFullName");
+            builder.Property(x => x.DescribedType)
+                .HasConversion(ConverterFactory.CreateTypeToStringConverter())
+                .HasColumnName(nameof(Expectation.DescribedType));
         }
+    }
+    
+    public class ExpectationConfiguration : ExpectationBaseConfiguration<Expectation>
+    {
+        
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.ProcessAggregate.Expectations;
+using Domain.ProcessAggregate.Expectations.AggregateExpectations;
+using Domain.ProcessAggregate.Expectations.CompareExpectations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
@@ -10,8 +13,13 @@ namespace Persistence
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var configurationsAssembly = typeof(WorkflowFrameworkDbContext).Assembly;
+            base.OnModelCreating(modelBuilder);
             
+            var configurationsAssembly = typeof(WorkflowFrameworkDbContext).Assembly;
+
+            modelBuilder.Ignore<Expectation>();
+            modelBuilder.Ignore<AggregateExpectationBase>();
+            modelBuilder.Ignore<CompareExpectationBase>();
             modelBuilder.ApplyConfigurationsFromAssembly(configurationsAssembly);
         }
     }

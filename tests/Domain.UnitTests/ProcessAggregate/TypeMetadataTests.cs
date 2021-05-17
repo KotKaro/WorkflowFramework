@@ -9,10 +9,10 @@ namespace Domain.UnitTests.ProcessAggregate
     public class TypeMetadataServiceTests
     {
         [Fact]
-        public void When_ForResolveMetadataAboutPropertiesClassNotProvided_Expect_ArgumentNullExceptionThrown()
+        public void When_ForResolveMetadataAboutPropertiesClassNotProvided_Expect_ArgumentExceptionThrown()
         {
             //Act + Assert
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentException>(() =>
             {
                 // ReSharper disable once ObjectCreationAsStatement
                 new TypeMetadata(null);
@@ -26,23 +26,23 @@ namespace Domain.UnitTests.ProcessAggregate
             var sut = new TypeMetadata(typeof(TestClass));
             
             //Assert
-            sut.ValueAccessors.Any(x => x.Name == nameof(TestClass.Name)).Should().Be(true);
-            sut.ValueAccessors.Any(x => x.Name == nameof(TestClass.Number)).Should().Be(true);
-            sut.ValueAccessors.Any(x => x.Name == nameof(TestClass.GetHello)).Should().Be(true);
+            sut.ValueProviders.Any(x => x.Name == nameof(TestClass.Name)).Should().Be(true);
+            sut.ValueProviders.Any(x => x.Name == nameof(TestClass.Number)).Should().Be(true);
+            sut.ValueProviders.Any(x => x.Name == nameof(TestClass.GetHello)).Should().Be(true);
         }
         
         [Fact]
-        public void When_GetHelloValueAccessorFound_Expect_GotCorrectArguments()
+        public void When_GetHelloValueProviderFound_Expect_GotCorrectArguments()
         {
             //Act
             var sut = new TypeMetadata(typeof(TestClass));
             
             //Assert
-            var getHelloValueAccessor = sut.ValueAccessors
+            var getHelloValueProvider = sut.ValueProviders
                 .First(x => x.Name == nameof(TestClass.GetHello));
             
-            getHelloValueAccessor.MethodArguments.Count.Should().Be(1);
-            getHelloValueAccessor.MethodArguments.ElementAt(0).Name.Should().Be("name");
+            getHelloValueProvider.MethodArguments.Count.Should().Be(1);
+            getHelloValueProvider.MethodArguments.ElementAt(0).Name.Should().Be("name");
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Domain.UnitTests.ProcessAggregate
             
             //Assert
             sut.Type.Should().NotBeNull();
-            sut.ValueAccessors.Count.Should().BeGreaterThan(0);
+            sut.ValueProviders.Count.Should().BeGreaterThan(0);
         }
         
         [Fact]

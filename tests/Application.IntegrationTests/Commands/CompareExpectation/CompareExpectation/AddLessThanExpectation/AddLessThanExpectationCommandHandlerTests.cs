@@ -31,7 +31,7 @@ namespace Application.IntegrationTests.Commands.CompareExpectation.CompareExpect
                 await mediator!.Send(new AddLessThanExpectationCommand
                 {
                     StepNavigatorId = Guid.Empty,
-                    ValueAccessorId = Guid.Empty,
+                    ValueProviderId = Guid.Empty,
                     Value = "test"
                 });
             });
@@ -55,7 +55,7 @@ namespace Application.IntegrationTests.Commands.CompareExpectation.CompareExpect
             await mediator!.Send(new AddLessThanExpectationCommand
             {
                 StepNavigatorId = stepNavigator.Id,
-                ValueAccessorId = typeMetadata.ValueAccessors.First().Id,
+                ValueProviderId = typeMetadata.ValueProviders.First().Id,
                 Value = "test"
             });
             
@@ -66,7 +66,7 @@ namespace Application.IntegrationTests.Commands.CompareExpectation.CompareExpect
 
             var equalExpectation = stepNavigatorFromDb.Expectations.First() as LessThanExpectation;
             equalExpectation!.DescribedType.Should().Be(typeof(TestClass));
-            equalExpectation.Value.Should().Be("test");
+            equalExpectation.Value.GetOriginalValue().Should().Be("test");
         }
     }
 }

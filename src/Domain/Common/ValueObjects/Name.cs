@@ -23,5 +23,10 @@ namespace Domain.Common.ValueObjects
         {
             yield return Value;
         }
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }

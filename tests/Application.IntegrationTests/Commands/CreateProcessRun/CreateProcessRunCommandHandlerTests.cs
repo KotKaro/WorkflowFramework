@@ -96,7 +96,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
                     new ArgumentDto
                     {
                         Value = "test",
-                        MemberDescriptorId = typeMetadata.ValueAccessors.First().Id
+                        MemberDescriptorId = typeMetadata.ValueProviders.First().Id
                     }
                 }
             });

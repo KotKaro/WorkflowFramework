@@ -19,7 +19,7 @@ namespace Application.UnitTests.Commands.AddExpectation.AggregateExpectation
             out StepNavigator stepNavigator
         )
         {
-            var valueAccessor = new ValueAccessor(
+            var valueProvider = new ValueProvider(
                 "test",
                 typeof(AddEqualExpectationCommandHandlerTests),
                 typeof(AddEqualExpectationCommandHandlerTests)
@@ -33,7 +33,7 @@ namespace Application.UnitTests.Commands.AddExpectation.AggregateExpectation
                 .ReturnsAsync(stepNavigator);
 
             expectationRepository.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new EqualExpectation(valueAccessor, "test"));
+                .ReturnsAsync(new EqualExpectation(valueProvider, "test"));
 
             return CreateHandler(stepNavigatorRepositoryMock, expectationRepository);
         }

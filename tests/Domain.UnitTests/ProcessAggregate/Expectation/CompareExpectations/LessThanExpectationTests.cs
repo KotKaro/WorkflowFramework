@@ -5,7 +5,7 @@ using Domain.ProcessAggregate.Expectations.CompareExpectations;
 using FluentAssertions;
 using Xunit;
 
-namespace Domain.UnitTests.ProcessAggregate.Specification
+namespace Domain.UnitTests.ProcessAggregate.Expectation.CompareExpectations
 {
     public class LessThanSpecificationTests
     {
@@ -25,8 +25,8 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             
             var metadata = new TypeMetadata(typeof(TestClass));
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Number));
-            var sut = new LessThanExpectation(namePropertyValueAccessor, specificationValue);
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Number));
+            var sut = new LessThanExpectation(namePropertyValueProvider, specificationValue);
 
             //Act
             var result = sut.Apply(instance);
@@ -45,8 +45,8 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             
             var metadata = new TypeMetadata(typeof(TestClass));
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Name));
-            var sut = new LessThanExpectation(namePropertyValueAccessor, "test");
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Name));
+            var sut = new LessThanExpectation(namePropertyValueProvider, "test");
 
             //Act + Assert
             Assert.Throws<CannotCompareException>(() =>

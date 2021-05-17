@@ -11,7 +11,7 @@ namespace Application.Commands.AddExpectation.CompareExpectation
             RuleFor(x => x.StepNavigatorId)
                 .NotEmpty();
 
-            RuleFor(x => x.ValueAccessorId)
+            RuleFor(x => x.ValueProviderId)
                 .NotEmpty();
 
             RuleFor(x => x.Value)

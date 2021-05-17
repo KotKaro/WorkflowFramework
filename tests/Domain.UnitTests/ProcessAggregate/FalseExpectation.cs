@@ -1,10 +1,9 @@
 using System;
 using Domain.ProcessAggregate;
-using Domain.ProcessAggregate.Expectations;
 
 namespace Domain.UnitTests.ProcessAggregate
 {
-    public class FalseExpectation : Expectation
+    public class FalseExpectation : Domain.ProcessAggregate.Expectations.Expectation
     {
         public int InvokeCounter { get; private set; }
 

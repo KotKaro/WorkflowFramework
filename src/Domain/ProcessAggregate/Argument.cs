@@ -1,28 +1,25 @@
+using System;
 using Domain.Common;
-using System.Text.Json;
+using Domain.Common.ValueObjects;
 
 namespace Domain.ProcessAggregate
 {
     public class Argument : Entity
     {
-        public string ValueString { get; private set; }
+        public JsonValue Value { get; private set; }
         public MemberDescriptor MemberDescriptor { get; }
-
-        public object Value => JsonSerializer.Deserialize(ValueString, MemberDescriptor.Type);
 
         private Argument() {}
         
         public Argument(MemberDescriptor memberDescriptor, object value)
         {
             MemberDescriptor = memberDescriptor;
-            ValueString = JsonSerializer.Serialize(value);
-            
-            AssertValueCanBeDeserialized();
-        }
+            Value = new JsonValue(value);
 
-        private void AssertValueCanBeDeserialized()
-        {
-            JsonSerializer.Deserialize(ValueString, MemberDescriptor.Type);
+            if (memberDescriptor.Type != Value.ValueType)
+            {
+                throw new ArgumentException("Member descriptor type is not the same as provided value type!");
+            }
         }
     }
 }

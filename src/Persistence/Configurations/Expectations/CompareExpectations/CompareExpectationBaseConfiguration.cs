@@ -1,3 +1,4 @@
+using Domain.Common.ValueObjects;
 using Domain.ProcessAggregate.Expectations.CompareExpectations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,12 +11,15 @@ namespace Persistence.Configurations.Expectations.CompareExpectations
         {
             base.Configure(builder);
 
-            builder.Property(x => x.ValueString)
-                .HasColumnName(nameof(CompareExpectationBase.ValueString));
+            builder.OwnsOne(x => x.Value, p =>
+            {
+                p.Property(x => x.ValueJson)
+                    .HasColumnName(nameof(JsonValue.ValueJson));
 
-            builder.Property(x => x.ValueType)
-                .HasColumnName(nameof(CompareExpectationBase.ValueType))
-                .HasConversion(ConverterFactory.CreateTypeToStringConverter());
+                p.Property(x => x.ValueType)
+                    .HasConversion(ConverterFactory.CreateTypeToStringConverter())
+                    .HasColumnName(nameof(JsonValue.ValueType));
+            });
         }
     }
 }

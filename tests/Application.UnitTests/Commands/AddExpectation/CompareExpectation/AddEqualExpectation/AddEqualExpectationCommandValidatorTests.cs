@@ -17,7 +17,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             var result = sut.Validate(new AddEqualExpectationCommand
             {
                 StepNavigatorId = Guid.Empty,
-                ValueAccessorId = Guid.NewGuid(),
+                ValueProviderId = Guid.NewGuid(),
                 Value = "test"
             });
 
@@ -26,7 +26,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
         }
         
         [Fact]
-        public void When_ValueAccessorIdNotProvided_Expect_ValidationFail()
+        public void When_ValueProviderIdNotProvided_Expect_ValidationFail()
         {
             //Arrange
             var sut = new AddEqualExpectationCommandValidator();
@@ -35,7 +35,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             var result = sut.Validate(new AddEqualExpectationCommand
             {
                 StepNavigatorId = Guid.NewGuid(),
-                ValueAccessorId = Guid.Empty,
+                ValueProviderId = Guid.Empty,
                 Value = "test"
             });
 
@@ -53,7 +53,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             var result = sut.Validate(new AddEqualExpectationCommand
             {
                 StepNavigatorId = Guid.NewGuid(),
-                ValueAccessorId = Guid.NewGuid(),
+                ValueProviderId = Guid.NewGuid(),
                 Value = null
             });
 

@@ -7,26 +7,21 @@ using Domain.Exceptions;
 
 namespace Domain.ProcessAggregate
 {
-    public class ValueAccessor : MemberDescriptor
+    public class ValueProvider : MemberDescriptor
     {
         private const BindingFlags PublicInstanceBindingFlags = BindingFlags.Instance | BindingFlags.Public;
-
-        public string Name { get; private set; }
         public Type OwningType { get; private set; }
-        public Type ReturnType { get; private set; }
         public IReadOnlyCollection<MemberDescriptor> MethodArguments { get; private set; }
-        private ValueAccessor() { }
+        private ValueProvider() { }
 
-        public ValueAccessor(string name, Type owningType, Type returnType, params MemberDescriptor[] methodArguments) : base(name, returnType)
+        public ValueProvider(string name, Type owningType, Type returnType, params MemberDescriptor[] methodArguments) : base(name, returnType)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
             }
             
-            Name = name;
             OwningType = owningType;
-            ReturnType = returnType;
             MethodArguments = methodArguments;
         }
 
@@ -55,7 +50,7 @@ namespace Domain.ProcessAggregate
             return arguments
                 .Where(x => parameterNames.Contains(x.MemberDescriptor.Name))
                 .OrderBy(x => parameterNames.IndexOf(x.MemberDescriptor.Name))
-                .Select(x => x.Value)
+                .Select(x => x.Value.GetOriginalValue())
                 .ToArray();
         }
 

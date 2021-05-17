@@ -1,3 +1,4 @@
+using Domain.Common.ValueObjects;
 using Domain.ProcessAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,8 +9,15 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Argument> builder)
         {
-            builder.Property(x => x.ValueString)
-                .HasColumnName(nameof(Argument.ValueString));
+            builder.OwnsOne(x => x.Value, p =>
+            {
+                p.Property(x => x.ValueJson)
+                    .HasColumnName(nameof(JsonValue.ValueJson));
+
+                p.Property(x => x.ValueType)
+                    .HasColumnName(nameof(JsonValue.ValueType))
+                    .HasConversion(ConverterFactory.CreateTypeToStringConverter());
+            });
 
             builder.HasOne(x => x.MemberDescriptor);
         }

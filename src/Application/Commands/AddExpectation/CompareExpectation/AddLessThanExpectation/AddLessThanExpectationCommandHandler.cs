@@ -8,15 +8,15 @@ namespace Application.Commands.AddExpectation.CompareExpectation.AddLessThanExpe
     {
         public AddLessThanExpectationCommandHandler(
             IStepNavigatorRepository stepNavigatorRepository,
-            IValueAccessorRepository valueAccessorRepository,
+            IValueProviderRepository valueProviderRepository,
             IExpectationRepository expectationRepository
-        ) : base(stepNavigatorRepository, valueAccessorRepository, expectationRepository)
+        ) : base(stepNavigatorRepository, valueProviderRepository, expectationRepository)
         {
         }
 
-        protected override LessThanExpectation CreateExpectation(AddLessThanExpectationCommand request, ValueAccessor valueAccessor)
+        protected override LessThanExpectation CreateExpectation(AddLessThanExpectationCommand request, ValueProvider valueProvider)
         {
-            return new(valueAccessor, request.Value);
+            return new(valueProvider, request.Value);
         }
     }
 }

@@ -5,7 +5,7 @@ using Domain.ProcessAggregate.Expectations.CompareExpectations;
 using FluentAssertions;
 using Xunit;
 
-namespace Domain.UnitTests.ProcessAggregate.Specification
+namespace Domain.UnitTests.ProcessAggregate.Expectation.AggregateExpectations
 {
     public class OrSpecificationTests
     {
@@ -19,12 +19,12 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             var metadata = new TypeMetadata(typeof(TestClass));
 
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Name));
-            var getHelloMethodValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.GetHello));
-            var getHelloArgument = new Argument(getHelloMethodValueAccessor.MethodArguments.ElementAt(0), "test");
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Name));
+            var getHelloMethodValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.GetHello));
+            var getHelloArgument = new Argument(getHelloMethodValueProvider.MethodArguments.ElementAt(0), "test");
             
-            var propertyEqualSpecification = new EqualExpectation(namePropertyValueAccessor, "false-test");
-            var methodEqualSpecification = new EqualExpectation(getHelloMethodValueAccessor, "Hello false-test");
+            var propertyEqualSpecification = new EqualExpectation(namePropertyValueProvider, "false-test");
+            var methodEqualSpecification = new EqualExpectation(getHelloMethodValueProvider, "Hello false-test");
             var orSpecification = new OrExpectation(new []
             {
                 propertyEqualSpecification, methodEqualSpecification
@@ -47,12 +47,12 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             var metadata = new TypeMetadata(typeof(TestClass));
 
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Name));
-            var getHelloMethodValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.GetHello));
-            var getHelloArgument = new Argument(getHelloMethodValueAccessor.MethodArguments.ElementAt(0), "test");
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Name));
+            var getHelloMethodValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.GetHello));
+            var getHelloArgument = new Argument(getHelloMethodValueProvider.MethodArguments.ElementAt(0), "test");
             
-            var propertyEqualSpecification = new EqualExpectation(namePropertyValueAccessor, "test");
-            var methodEqualSpecification = new EqualExpectation(getHelloMethodValueAccessor, "Hello false-test");
+            var propertyEqualSpecification = new EqualExpectation(namePropertyValueProvider, "test");
+            var methodEqualSpecification = new EqualExpectation(getHelloMethodValueProvider, "Hello false-test");
             var orSpecification = new OrExpectation(new []
             {
                 propertyEqualSpecification, methodEqualSpecification

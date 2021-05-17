@@ -27,7 +27,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddBi
             //Act
             await sut.Handle(new AddBiggerThanExpectationCommand
             {
-                ValueAccessorId = Guid.NewGuid(),
+                ValueProviderId = Guid.NewGuid(),
                 StepNavigatorId = Guid.NewGuid(),
                 Value = "test"
             }, CancellationToken.None);
@@ -36,12 +36,12 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddBi
             stepNavigator.Expectations.First().GetType().Should().Be(typeof(BiggerThanExpectation));
         }
 
-        protected override AddBiggerThanExpectationCommandHandler CreateHandler(Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock, Mock<IValueAccessorRepository> valueAccessorRepositoryMock,
+        protected override AddBiggerThanExpectationCommandHandler CreateHandler(Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock, Mock<IValueProviderRepository> valueProviderRepositoryMock,
             Mock<IExpectationRepository> expectationRepository)
         {
             return new(
                 stepNavigatorRepositoryMock.Object,
-                valueAccessorRepositoryMock.Object,
+                valueProviderRepositoryMock.Object,
                 expectationRepository.Object
             );
         }

@@ -5,9 +5,9 @@ using Domain.ProcessAggregate.Expectations.CompareExpectations;
 using FluentAssertions;
 using Xunit;
 
-namespace Domain.UnitTests.ProcessAggregate.Specification
+namespace Domain.UnitTests.ProcessAggregate.Expectation.CompareExpectations
 {
-    public class BiggerThanSpecificationTests
+    public class BiggerThanExpectationTests
     {
         [Theory]
         [InlineData(10, 9, false)]
@@ -25,8 +25,8 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             
             var metadata = new TypeMetadata(typeof(TestClass));
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Number));
-            var sut = new BiggerThanExpectation(namePropertyValueAccessor, specificationValue);
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Number));
+            var sut = new BiggerThanExpectation(namePropertyValueProvider, specificationValue);
 
             //Act
             var result = sut.Apply(instance);
@@ -45,8 +45,8 @@ namespace Domain.UnitTests.ProcessAggregate.Specification
             };
             
             var metadata = new TypeMetadata(typeof(TestClass));
-            var namePropertyValueAccessor = metadata.ValueAccessors.First(x => x.Name == nameof(TestClass.Name));
-            var sut = new BiggerThanExpectation(namePropertyValueAccessor, "test");
+            var namePropertyValueProvider = metadata.ValueProviders.First(x => x.Name == nameof(TestClass.Name));
+            var sut = new BiggerThanExpectation(namePropertyValueProvider, "test");
 
             //Act + Assert
             Assert.Throws<CannotCompareException>(() =>

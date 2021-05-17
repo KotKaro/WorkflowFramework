@@ -48,8 +48,8 @@ namespace Application.IntegrationTests.Commands.CompareExpectation.AggregateExpe
             var typeMetadata = new TypeMetadata(typeof(TestClass));
             var step = new Step("test");
             var stepNavigator = new StepNavigator(step);
-            var expectation1 = new EqualExpectation(typeMetadata.ValueAccessors.First(), "test");
-            var expectation2 = new EqualExpectation(typeMetadata.ValueAccessors.First(), "test");
+            var expectation1 = new EqualExpectation(typeMetadata.ValueProviders.First(), "test");
+            var expectation2 = new EqualExpectation(typeMetadata.ValueProviders.First(), "test");
 
             await Context.AddAsync(typeMetadata);
             await Context.AddAsync(step);

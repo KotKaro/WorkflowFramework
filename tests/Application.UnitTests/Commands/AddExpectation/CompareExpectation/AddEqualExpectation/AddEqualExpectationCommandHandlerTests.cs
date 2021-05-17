@@ -35,7 +35,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             {
                 await sut.Handle(new AddEqualExpectationCommand
                 {
-                    ValueAccessorId = Guid.NewGuid(),
+                    ValueProviderId = Guid.NewGuid(),
                     StepNavigatorId = Guid.NewGuid(),
                     Value = "test"
                 }, CancellationToken.None);
@@ -43,26 +43,26 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
         }
 
         [Fact]
-        public void When_ValueAccessorNotExists_Expect_ObjectNotFoundExceptionThrown()
+        public void When_ValueProviderNotExists_Expect_ObjectNotFoundExceptionThrown()
         {
             //Arrange
             var sut = CreateHandler(
                 out _,
-                out var valueAccessorRepositoryMock,
+                out var ValueProviderRepositoryMock,
                 out _,
                 out _
             );
 
             //Act
-            valueAccessorRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(null as ValueAccessor);
+            ValueProviderRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(null as ValueProvider);
 
             //Act + Assert
             Assert.ThrowsAsync<ObjectNotFoundException>(async () =>
             {
                 await sut.Handle(new AddEqualExpectationCommand
                 {
-                    ValueAccessorId = Guid.NewGuid(),
+                    ValueProviderId = Guid.NewGuid(),
                     StepNavigatorId = Guid.NewGuid(),
                     Value = "test"
                 }, CancellationToken.None);
@@ -85,7 +85,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             //Act
             await sut.Handle(new AddEqualExpectationCommand
             {
-                ValueAccessorId = Guid.NewGuid(),
+                ValueProviderId = Guid.NewGuid(),
                 StepNavigatorId = Guid.NewGuid(),
                 Value = "test"
             }, CancellationToken.None);
@@ -108,7 +108,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             //Act
             await sut.Handle(new AddEqualExpectationCommand
             {
-                ValueAccessorId = Guid.NewGuid(),
+                ValueProviderId = Guid.NewGuid(),
                 StepNavigatorId = Guid.NewGuid(),
                 Value = "test"
             }, CancellationToken.None);
@@ -131,7 +131,7 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             //Act
             await sut.Handle(new AddEqualExpectationCommand
             {
-                ValueAccessorId = Guid.NewGuid(),
+                ValueProviderId = Guid.NewGuid(),
                 StepNavigatorId = Guid.NewGuid(),
                 Value = "test"
             }, CancellationToken.None);
@@ -140,12 +140,12 @@ namespace Application.UnitTests.Commands.AddExpectation.CompareExpectation.AddEq
             stepNavigator.Expectations.First().GetType().Should().Be(typeof(EqualExpectation));
         }
 
-        protected override AddEqualExpectationCommandHandler CreateHandler(Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock, Mock<IValueAccessorRepository> valueAccessorRepositoryMock,
+        protected override AddEqualExpectationCommandHandler CreateHandler(Mock<IStepNavigatorRepository> stepNavigatorRepositoryMock, Mock<IValueProviderRepository> valueProviderRepositoryMock,
             Mock<IExpectationRepository> expectationRepository)
         {
             return new(
                 stepNavigatorRepositoryMock.Object,
-                valueAccessorRepositoryMock.Object,
+                valueProviderRepositoryMock.Object,
                 expectationRepository.Object
             );
         }

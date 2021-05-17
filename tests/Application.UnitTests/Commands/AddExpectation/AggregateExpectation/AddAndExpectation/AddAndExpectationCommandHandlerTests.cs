@@ -73,7 +73,7 @@ namespace Application.UnitTests.Commands.AddExpectation.AggregateExpectation.Add
         {
             //Arrange
             var expectations = Enumerable.Range(0, 100)
-                .Select(_ => new EqualExpectation(new ValueAccessor("test", GetType(), GetType()), "test"))
+                .Select(_ => new EqualExpectation(new ValueProvider("test", GetType(), GetType()), "test"))
                 .ToArray();
 
             var handler = CreateHandler(
@@ -100,7 +100,7 @@ namespace Application.UnitTests.Commands.AddExpectation.AggregateExpectation.Add
         public async Task When_StepNavigatorExistsAndAllExpectationsExists_Expect_StepNavigatorGotExpectationAdded()
         {
             var expectations = Enumerable.Range(0, 100)
-                .Select(_ => new EqualExpectation(new ValueAccessor("test", GetType(), GetType()), "test"))
+                .Select(_ => new EqualExpectation(new ValueProvider("test", GetType(), GetType()), "test"))
                 .ToArray();
 
             var handler = CreateHandler(
@@ -127,7 +127,7 @@ namespace Application.UnitTests.Commands.AddExpectation.AggregateExpectation.Add
         public async Task When_StepNavigatorExistsAndAllExpectationsExists_Expect_AddedExpectationIsAndExpectation()
         {
             var expectations = Enumerable.Range(0, 100)
-                .Select(_ => new EqualExpectation(new ValueAccessor("test", GetType(), GetType()), "test"))
+                .Select(_ => new EqualExpectation(new ValueProvider("test", GetType(), GetType()), "test"))
                 .ToArray();
 
             var handler = CreateHandler(

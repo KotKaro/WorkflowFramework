@@ -9,16 +9,10 @@ namespace Domain.ProcessAggregate
     {
         private const BindingFlags PublicInstanceBindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
-        private List<ValueAccessor> _valueAccessors;
-        public IReadOnlyCollection<ValueAccessor> ValueAccessors => _valueAccessors.ToArray();
+        private List<ValueProvider> _valueProviders;
+        public IReadOnlyCollection<ValueProvider> ValueProviders => _valueProviders.ToArray();
 
         public Type Type { get; private set; }
-
-        public TypeMetadata(Type type)
-        {
-            Type = type ?? throw new ArgumentNullException(nameof(type));
-            InitializeValueAccessors();
-        }
 
         public TypeMetadata(string typeName, string assemblyName)
         {
@@ -35,7 +29,7 @@ namespace Domain.ProcessAggregate
             try
             {
                 Type = Type.GetType($"{typeName}, {assemblyName}");
-                InitializeValueAccessors();
+                InitializeValueProviders();
             }
             catch (Exception)
             {
@@ -44,8 +38,20 @@ namespace Domain.ProcessAggregate
                 );
             }
         }
+        
+        public TypeMetadata(Type type) : this(type?.FullName, type?.Assembly.FullName)
+        {
+        }
+        
+        private void InitializeValueProviders()
+        {
+            _valueProviders = new List<ValueProvider>();
 
-        private IEnumerable<ValueAccessor> GetMethodsValueAccessors()
+            _valueProviders.AddRange(GetPropertiesValueProviders());
+            _valueProviders.AddRange(GetMethodsValueProviders());
+        }
+
+        private IEnumerable<ValueProvider> GetMethodsValueProviders()
         {
             return Type.GetMethods(PublicInstanceBindingFlags)
                 .Where(x => !x.IsSpecialName)
@@ -54,22 +60,14 @@ namespace Domain.ProcessAggregate
                     var arguments = x.GetParameters().Select(y => new MemberDescriptor(y.Name, y.ParameterType))
                         .ToArray();
 
-                    return new ValueAccessor(x.Name, Type, x.ReturnType, arguments);
+                    return new ValueProvider(x.Name, Type, x.ReturnType, arguments);
                 });
         }
 
-        private IEnumerable<ValueAccessor> GetPropertiesValueAccessors()
+        private IEnumerable<ValueProvider> GetPropertiesValueProviders()
         {
             return Type.GetProperties(PublicInstanceBindingFlags)
-                .Select(x => new ValueAccessor(x.Name, Type, x.PropertyType));
-        }
-
-        private void InitializeValueAccessors()
-        {
-            _valueAccessors = new List<ValueAccessor>();
-
-            _valueAccessors.AddRange(GetPropertiesValueAccessors());
-            _valueAccessors.AddRange(GetMethodsValueAccessors());
+                .Select(x => new ValueProvider(x.Name, Type, x.PropertyType));
         }
     }
 }

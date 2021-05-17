@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.ProcessAggregate;
 using Domain.Repositories;
@@ -22,6 +23,11 @@ namespace Persistence.Repositories
             return Context.Set<Process>()
                 .Include(x => x.Steps)
                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public IEnumerable<Process> GetAll()
+        {
+            return Context.Set<Process>();
         }
     }
 }

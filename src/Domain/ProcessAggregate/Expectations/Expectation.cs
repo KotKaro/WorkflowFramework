@@ -3,19 +3,20 @@ using Domain.Common;
 
 namespace Domain.ProcessAggregate.Expectations
 {
-    public abstract class Expectation : Entity
+    public class Expectation : Entity
     {
-        private string DescribedTypeFullName { get; set; } 
-        
-        public Type DescribedType => Type.GetType(DescribedTypeFullName);
+        public Type DescribedType { get; private set; }
 
         protected Expectation() {}
         
         protected Expectation(Type describedType) : this()
         {
-            DescribedTypeFullName = $"{describedType.FullName}, {describedType.Assembly.FullName}";
+            DescribedType = describedType ?? throw new ArgumentNullException(nameof(describedType));
         }
 
-        public abstract bool Apply(object instance, params Argument[] arguments);
+        public virtual bool Apply(object instance, params Argument[] arguments)
+        {
+            return false;
+        }
     }
 }
