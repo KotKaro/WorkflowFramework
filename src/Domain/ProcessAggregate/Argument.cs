@@ -4,7 +4,7 @@ using Domain.Common.ValueObjects;
 
 namespace Domain.ProcessAggregate
 {
-    public class Argument : GuidEntity
+    public class Argument : Entity
     {
         public JsonValue Value { get; private set; }
         public MemberDescriptor MemberDescriptor { get; }

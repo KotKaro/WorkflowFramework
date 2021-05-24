@@ -16,7 +16,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public static IEnumerable<object> When_ProcessRunInitializedWithoutCorrectArguments_Expect_ArgumentNullExceptionThrown_TCS()
         {
             yield return new object[] { null!, TestDataFactory.CreateStep() };
-            yield return new object[] { TestDataFactory.CreateProcess(), null! };
+            yield return new object[] { TestDataFactory.CreateProcess("test"), null! };
         }
 
         [Theory]

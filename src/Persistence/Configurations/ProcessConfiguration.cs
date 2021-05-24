@@ -9,6 +9,10 @@ public class ProcessConfiguration : IEntityTypeConfiguration<Process>
 {
     public void Configure(EntityTypeBuilder<Process> builder)
     {
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+        
         builder.HasMany(x => x.Steps)
             .WithOne()
             .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);

@@ -28,7 +28,7 @@ namespace Application.Commands.RemoveStepFromProcess
                 throw new ObjectNotFoundException(request.StepId, typeof(Step));
             }
             
-            var process = await _processRepository.GetByIdAsync(request.ProcessName);
+            var process = await _processRepository.GetByName(request.ProcessName);
             
             if (process is null)
             {

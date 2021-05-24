@@ -2,9 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-
         <IsPackable>false</IsPackable>
+        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>    
     </PropertyGroup>
+    
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\API\API.csproj" />

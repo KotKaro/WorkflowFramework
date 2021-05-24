@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.ProcessAggregate;
@@ -17,11 +18,18 @@ namespace Persistence.Repositories
             await Context.Set<Process>().AddAsync(process);
         }
 
-        public Task<Process> GetByIdAsync(string id)
+        public Task<Process> GetByIdAsync(Guid id)
         {
             return Context.Set<Process>()
                 .Include(x => x.Steps)
                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public Task<Process> GetByName(string name)
+        {
+            return Context.Set<Process>()
+                .Include(x => x.Steps)
+                .FirstOrDefaultAsync(x => x.Name.Value == name);
         }
 
         public IEnumerable<Process> GetAll()

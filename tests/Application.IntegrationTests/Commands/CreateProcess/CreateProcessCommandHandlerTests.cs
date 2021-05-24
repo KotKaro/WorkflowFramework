@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Exceptions;
 using Domain.ProcessAggregate;
 using FluentAssertions;
 using FluentValidation;
@@ -46,6 +47,32 @@ namespace Application.IntegrationTests.Commands.CreateProcess
             });
             
             //Assert
+            context!.Set<Process>().Count().Should().Be(1);
+        }
+        
+        [Fact]
+        public async Task When_ProcessWithSameNameTryingToCreateTwice_Expect_ErrorAtSecondTime()
+        {
+            //Arrange
+            var mediator = ApplicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
+            var context = ApplicationFixture.Host.Services.GetService(typeof(WorkflowFrameworkDbContext)) as WorkflowFrameworkDbContext;
+
+            //Act
+            await mediator!.Send(new Application.Commands.CreateProcess.CreateProcessCommand
+            {
+                ProcessName = "test"
+            });
+
+            
+            //Assert
+            await Assert.ThrowsAsync<EntityAlreadyExistsException>(async () =>
+            {
+                await mediator!.Send(new Application.Commands.CreateProcess.CreateProcessCommand
+                {
+                    ProcessName = "test"
+                });
+            });
+            
             context!.Set<Process>().Count().Should().Be(1);
         }
     }

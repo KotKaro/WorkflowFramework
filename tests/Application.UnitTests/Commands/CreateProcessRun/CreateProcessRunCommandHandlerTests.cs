@@ -36,15 +36,19 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             //Arrange
             var sut = CreateHandler(out var processRepositoryMock, out _, out _);
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(TestDataFactory.CreateProcess("test"));
-
+            var process = TestDataFactory.CreateProcess("test");
+            
+            processRepositoryMock.Setup(x => x.GetByIdAsync(process.Id))
+                .ReturnsAsync(process);
+            processRepositoryMock.Setup(x => x.GetByName(process.Name.Value))
+                .ReturnsAsync(process);
+            
             //Act + Assert
             await Assert.ThrowsAsync<StepNotInProcessException>(async () =>
             {
                 await sut.Handle(new CreateProcessRunCommand
                 {
-                    ProcessName = Guid.NewGuid().ToString(),
+                    ProcessName = process.Name.Value,
                     StartStepId = Guid.NewGuid()
                 }, CancellationToken.None);
             });
@@ -69,7 +73,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             {
                 await sut.Handle(new CreateProcessRunCommand
                 {
-                    ProcessName = process.Id,
+                    ProcessName = process.Name.Value,
                     StartStepId = step.Id,
                     ArgumentDTOs = new[]
                     {
@@ -96,11 +100,14 @@ namespace Application.UnitTests.Commands.CreateProcessRun
 
             processRepositoryMock.Setup(x => x.GetByIdAsync(process.Id))
                 .ReturnsAsync(process);
+            
+            processRepositoryMock.Setup(x => x.GetByName(process.Name.Value))
+                .ReturnsAsync(process);
 
             //Act
             await sut.Handle(new CreateProcessRunCommand
             {
-                ProcessName = process.Id,
+                ProcessName = process.Name.Value,
                 StartStepId = step.Id
             }, CancellationToken.None);
 

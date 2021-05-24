@@ -59,7 +59,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
             //Act
             await mediator!.Send(new CreateProcessRunCommand
             {
-                ProcessName = process.Id,
+                ProcessName = process.Name.Value,
                 StartStepId = step.Id,
             });
 
@@ -90,7 +90,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
             //Act
             await mediator!.Send(new CreateProcessRunCommand
             {
-                ProcessName = process.Id,
+                ProcessName = process.Name.Value,
                 StartStepId = step.Id,
                 ArgumentDTOs = new []
                 {

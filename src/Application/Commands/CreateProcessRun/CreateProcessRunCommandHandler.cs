@@ -29,7 +29,7 @@ namespace Application.Commands.CreateProcessRun
 
         public async Task<Unit> Handle(CreateProcessRunCommand request, CancellationToken cancellationToken)
         {
-            var process = await _processRepository.GetByIdAsync(request.ProcessName);
+            var process = await _processRepository.GetByName(request.ProcessName);
             if (process is null)
             {
                 throw new ObjectNotFoundException(request.ProcessName, typeof(Process));

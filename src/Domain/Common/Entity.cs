@@ -2,13 +2,13 @@
 
 namespace Domain.Common
 {
-    public abstract class Entity<TId>
+    public abstract class Entity
     {
-        public TId Id { get; private set; }
+        public Guid Id { get; private set; }
         
-        protected Entity(TId id)
+        protected Entity(Guid? id = null)
         {
-            Id = id ?? default;
+            Id = id ?? Guid.NewGuid();
         }
 
         public override bool Equals(object obj)
@@ -28,7 +28,7 @@ namespace Domain.Common
                 return false;
             }
 
-            return Id.Equals(((Entity<TId>)obj).Id);
+            return Id.Equals(((Entity)obj).Id);
         }
 
         public override int GetHashCode()

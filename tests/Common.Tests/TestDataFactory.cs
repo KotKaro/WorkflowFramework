@@ -8,16 +8,22 @@ using Moq;
 
 namespace Common.Tests
 {
-    public class TestDataFactory
+    public static class TestDataFactory
     {
         public static Process CreateProcess(string name = "some process", IEnumerable<Step> steps = null)
         {
             var processRepository = new Mock<IProcessRepository>();
 
-            processRepository.Setup(x => x.GetByIdAsync(name))
+            processRepository.Setup(x => x.GetByName(name))
                 .Returns(Task.FromResult(null as Process));
 
             var stepsList = steps?.ToList();
+
+            if (steps == null)
+            {
+                return Process.Create(name, processRepository.Object);
+            }
+            
             return Process.Create(
                 new Name(name),
                 stepsList, 

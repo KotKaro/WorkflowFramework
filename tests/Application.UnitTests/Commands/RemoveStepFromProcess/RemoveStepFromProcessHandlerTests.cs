@@ -51,7 +51,7 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             stepRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new Step("test"));
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
+            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(null as Process);
 
             var sut = new RemoveStepFromProcessCommandHandler(
@@ -87,7 +87,9 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             stepRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(step);
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
+            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(process);
+            processRepositoryMock.Setup(x => x.GetByName(It.IsAny<string>()))
                 .ReturnsAsync(process);
 
             var sut = new RemoveStepFromProcessCommandHandler(
@@ -98,7 +100,7 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             //Act
             await sut.Handle(new RemoveStepFromProcessCommand
             {
-                ProcessName = process.Id,
+                ProcessName = process.Name.Value,
                 StepId = step.Id
             }, CancellationToken.None);
             
@@ -121,7 +123,9 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             stepRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(step);
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
+            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(process);
+            processRepositoryMock.Setup(x => x.GetByName(It.IsAny<string>()))
                 .ReturnsAsync(process);
 
             var sut = new RemoveStepFromProcessCommandHandler(
@@ -132,7 +136,7 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             //Act
             await sut.Handle(new RemoveStepFromProcessCommand
             {
-                ProcessName = process.Id,
+                ProcessName = process.Name.Value,
                 StepId = step.Id
             }, CancellationToken.None);
             

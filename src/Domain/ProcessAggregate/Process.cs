@@ -9,21 +9,16 @@ using Domain.Services;
 
 namespace Domain.ProcessAggregate
 {
-    public class Process : StringEntity
+    public class Process : Entity
     {
         private readonly ICollection<Step> _steps;
 
         public Name Name { get; }
         public IEnumerable<Step> Steps => _steps.ToArray();
 
-        private Process(string id) : base(id)
-        {
-            _steps ??= new List<Step>();
-        }
-
         public static Process Create(Name name, IProcessRepository processRepository)
         {
-            var process = processRepository.GetByIdAsync(name.Value).Result;
+            var process = processRepository.GetByName(name.Value).Result;
 
             if (process != null)
             {
@@ -35,18 +30,24 @@ namespace Domain.ProcessAggregate
         
         public static Process Create(Name name, ICollection<Step> steps, IProcessRepository processRepository)
         {
-            var process = Create(name, processRepository);
-            
-            foreach (var step in steps)
+            var process = processRepository.GetByName(name.Value).Result;
+
+            if (process != null)
             {
-                process.AddStep(step);
+                throw new EntityAlreadyExistsException(name.Value);
             }
 
-            return process;
+            return new Process(name, steps);
         }
         
-        private Process(Name name) : this(name.Value)
+        private Process() : base()
         {
+            _steps ??= new List<Step>();
+        }
+        
+        private Process(Name name) : this()
+        {
+            Name = name ?? throw new ArgumentException("Name not provided!");
         }
         
         private Process(Name name, ICollection<Step> steps) : this(name)

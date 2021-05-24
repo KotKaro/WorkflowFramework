@@ -35,7 +35,7 @@ namespace Application.IntegrationTests.Commands.AddStepToProcess
             //Act
             await mediator!.Send(new AddStepToProcessCommand
             {
-                ProcessName = process.Id,
+                ProcessName = process.Name.Value,
                 StepId = step.Id
             });
 

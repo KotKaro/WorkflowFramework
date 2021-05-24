@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common.Tests;
 using Domain.Exceptions;
 using Domain.ProcessAggregate;
+using Domain.Repositories;
 using Domain.Services;
 using Domain.UnitTests.DataFactories;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace Domain.UnitTests.ProcessAggregate
@@ -14,10 +17,16 @@ namespace Domain.UnitTests.ProcessAggregate
     public class ProcessTests
     {
         private readonly ExpectationResolverService _expectationResolverService;
+        private readonly IProcessRepository _processRepository;
 
         public ProcessTests()
         {
             _expectationResolverService = SpecificationResolverServiceFactory.Create();
+            var mock = new Mock<IProcessRepository>();
+            mock.Setup(x => x.GetByName(It.IsAny<String>()))
+                .Returns(Task.FromResult(null as Process));
+            
+            _processRepository = mock.Object;
         }
 
         [Theory]
@@ -47,7 +56,7 @@ namespace Domain.UnitTests.ProcessAggregate
             Assert.Throws<ArgumentException>(() =>
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                TestDataFactory.CreateProcess("test", steps);
+                Process.Create("test", steps, _processRepository);
             });
         }
 

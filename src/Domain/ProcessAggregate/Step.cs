@@ -6,7 +6,7 @@ using Domain.Common.ValueObjects;
 
 namespace Domain.ProcessAggregate
 {
-    public class  Step : GuidEntity
+    public class  Step : Entity
     {
         private readonly ICollection<StepNavigator> _stepNavigators;
         

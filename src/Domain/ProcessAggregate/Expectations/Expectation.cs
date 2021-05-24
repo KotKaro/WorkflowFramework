@@ -3,7 +3,7 @@ using Domain.Common;
 
 namespace Domain.ProcessAggregate.Expectations
 {
-    public class Expectation : GuidEntity
+    public class Expectation : Entity
     {
         public Type DescribedType { get; private set; }
 
