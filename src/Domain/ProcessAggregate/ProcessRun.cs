@@ -7,7 +7,7 @@ using Domain.Services;
 
 namespace Domain.ProcessAggregate
 {
-    public class ProcessRun : Entity
+    public class ProcessRun : GuidEntity
     {
         public Process Process { get; private set; }
         public Step CurrentStep { get; private set; }

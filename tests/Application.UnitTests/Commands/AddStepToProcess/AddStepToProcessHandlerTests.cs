@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Commands.AddStepToProcess;
+using Common.Tests;
 using Domain.Exceptions;
 using Domain.ProcessAggregate;
 using Domain.Repositories;
@@ -34,7 +35,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             {
                 await sut.Handle(new AddStepToProcessCommand
                 {
-                    ProcessId = Guid.NewGuid(),
+                    ProcessName = "test",
                     StepId = Guid.NewGuid()
                 }, CancellationToken.None);
             });
@@ -50,7 +51,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             stepRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new Step("test"));
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<String>()))
                 .ReturnsAsync(null as Process);
 
             var sut = new AddStepToProcessCommandHandler(
@@ -63,7 +64,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             {
                 await sut.Handle(new AddStepToProcessCommand
                 {
-                    ProcessId = Guid.NewGuid(),
+                    ProcessName = "test",
                     StepId = Guid.NewGuid()
                 }, CancellationToken.None);
             });
@@ -76,7 +77,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             var processRepositoryMock = new Mock<IProcessRepository>();
             var stepRepositoryMock = new Mock<IStepRepository>();
 
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
             
             process.AddStep(step);
@@ -86,7 +87,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             stepRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(step);
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(process);
 
             var sut = new AddStepToProcessCommandHandler(
@@ -97,7 +98,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             //Act
             await sut.Handle(new AddStepToProcessCommand
             {
-                ProcessId = process.Id,
+                ProcessName = process.Id,
                 StepId = step.Id
             }, CancellationToken.None);
             
@@ -112,13 +113,13 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             var processRepositoryMock = new Mock<IProcessRepository>();
             var stepRepositoryMock = new Mock<IStepRepository>();
 
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
             
             stepRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(step);
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(process);
 
             var sut = new AddStepToProcessCommandHandler(
@@ -129,7 +130,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             //Act
             await sut.Handle(new AddStepToProcessCommand
             {
-                ProcessId = process.Id,
+                ProcessName = process.Id,
                 StepId = step.Id
             }, CancellationToken.None);
             

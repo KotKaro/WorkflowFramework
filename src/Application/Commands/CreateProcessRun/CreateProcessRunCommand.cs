@@ -5,7 +5,7 @@ namespace Application.Commands.CreateProcessRun
 {
     public class CreateProcessRunCommand : IRequest
     {
-        public Guid ProcessId { get; set; }
+        public string ProcessName { get; set; }
 
         public Guid StartStepId { get; set; }
 

@@ -16,7 +16,7 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             //Act
             var result = sut.Validate(new AddStepToProcessCommand
             {
-                ProcessId = Guid.Empty,
+                ProcessName = string.Empty,
                 StepId = Guid.NewGuid()
             });
             
@@ -33,7 +33,7 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             //Act
             var result = sut.Validate(new AddStepToProcessCommand
             {
-                ProcessId = Guid.NewGuid(),
+                ProcessName = Guid.NewGuid().ToString(),
                 StepId = Guid.Empty
             });
             
@@ -50,7 +50,7 @@ namespace Application.UnitTests.Commands.RemoveStepFromProcess
             //Act
             var result = sut.Validate(new AddStepToProcessCommand
             {
-                ProcessId = Guid.NewGuid(),
+                ProcessName = Guid.NewGuid().ToString(),
                 StepId = Guid.NewGuid()
             });
             

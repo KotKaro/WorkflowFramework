@@ -17,7 +17,7 @@ namespace Application.Commands.CreateProcess
         
         public async Task<Unit> Handle(CreateProcessCommand request, CancellationToken cancellationToken)
         {
-            await _processRepository.CreateAsync(new Process(request.ProcessName));
+            await _processRepository.CreateAsync(Process.Create(request.ProcessName, _processRepository));
 
             return Unit.Value;
         }

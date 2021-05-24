@@ -7,7 +7,7 @@ using Domain.Services;
 
 namespace Domain.ProcessAggregate
 {
-    public class StepNavigator : Entity
+    public class StepNavigator : GuidEntity
     {
         private ICollection<Expectation> _expectations;
         public Step TargetStep { get; }

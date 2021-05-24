@@ -7,7 +7,7 @@ namespace Application.Commands.RemoveStepFromProcess
     {
         public AddStepToProcessValidator()
         {
-            RuleFor(x => x.ProcessId)
+            RuleFor(x => x.ProcessName)
                 .NotEmpty();
             
             RuleFor(x => x.StepId)

@@ -1,7 +1,4 @@
-﻿using Domain.ProcessAggregate.Expectations;
-using Domain.ProcessAggregate.Expectations.AggregateExpectations;
-using Domain.ProcessAggregate.Expectations.CompareExpectations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
@@ -17,9 +14,6 @@ namespace Persistence
             
             var configurationsAssembly = typeof(WorkflowFrameworkDbContext).Assembly;
 
-            modelBuilder.Ignore<Expectation>();
-            modelBuilder.Ignore<AggregateExpectationBase>();
-            modelBuilder.Ignore<CompareExpectationBase>();
             modelBuilder.ApplyConfigurationsFromAssembly(configurationsAssembly);
         }
     }

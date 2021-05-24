@@ -5,7 +5,7 @@ namespace Application.Commands.RemoveStepFromProcess
 {
     public class RemoveStepFromProcessCommand : IRequest
     {
-        public Guid ProcessId { get; set; }
+        public string ProcessName { get; set; }
         public Guid StepId { get; set; }
     }
 }

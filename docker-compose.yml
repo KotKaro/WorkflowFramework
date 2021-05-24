@@ -20,30 +20,30 @@ services:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
 
-  webappdotnet:
-    container_name: webapp-dotnet
-    build:
-      context: src/WebApp
-      dockerfile: Dockerfile
-      args:
-        - skip_client_build=true
-    restart: always
-    depends_on:
-      - database
-      - api
-    environment:
-      - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - 5000:80
-        
-  webappangular:
-    container_name: webapp-angular
-    build:
-      context: .
-      dockerfile: src/WebApp/ClientApp/Dockerfile
-    volumes:
-      - ./src/WebApp/ClientApp:/app
+#  webappdotnet:
+#    container_name: webapp-dotnet
+#    build:
+#      context: src/WebApp
+#      dockerfile: Dockerfile
+#      args:
+#        - skip_client_build=true
+#    restart: always
+#    depends_on:
+#      - database
+#      - api
+#    environment:
+#      - ASPNETCORE_URLS=http://+:80
+#      - ASPNETCORE_ENVIRONMENT=Development
+#    ports:
+#      - 5000:80
+#        
+#  webappangular:
+#    container_name: webapp-angular
+#    build:
+#      context: .
+#      dockerfile: src/WebApp/ClientApp/Dockerfile
+#    volumes:
+#      - ./src/WebApp/ClientApp:/app
       
   database:
     container_name: WorkflowFramework.Database

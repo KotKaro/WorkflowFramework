@@ -16,7 +16,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             //Act
             var result = sut.Validate(new CreateProcessRunCommand
             {
-                ProcessId = Guid.Empty,
+                ProcessName = string.Empty,
                 ArgumentDTOs = Array.Empty<ArgumentDto>(),
                 StartStepId = Guid.NewGuid()
             });
@@ -34,7 +34,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             //Act
             var result = sut.Validate(new CreateProcessRunCommand
             {
-                ProcessId = Guid.NewGuid(),
+                ProcessName = Guid.NewGuid().ToString(),
                 ArgumentDTOs = Array.Empty<ArgumentDto>(),
                 StartStepId = Guid.Empty
             });
@@ -52,7 +52,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             //Act
             var result = sut.Validate(new CreateProcessRunCommand
             {
-                ProcessId = Guid.NewGuid(),
+                ProcessName = Guid.NewGuid().ToString(),
                 ArgumentDTOs = new ArgumentDto[]
                 {
                   new()
@@ -77,7 +77,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             //Act
             var result = sut.Validate(new CreateProcessRunCommand
             {
-                ProcessId = Guid.NewGuid(),
+                ProcessName = Guid.NewGuid().ToString(),
                 ArgumentDTOs = new ArgumentDto[]
                 {
                     new()

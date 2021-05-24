@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Domain.Common.ValueObjects;
+using Common.Tests;
 using Domain.Exceptions;
 using Domain.ProcessAggregate;
 using Domain.Services;
@@ -29,7 +29,7 @@ namespace Domain.UnitTests.ProcessAggregate
             Assert.Throws<ArgumentException>(() =>
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                new Process(new Name(name), new[] {TestDataFactory.CreateStep()});
+                TestDataFactory.CreateProcess(name, new[] {TestDataFactory.CreateStep()});
             });
         }
 
@@ -47,7 +47,7 @@ namespace Domain.UnitTests.ProcessAggregate
             Assert.Throws<ArgumentException>(() =>
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                new Process(new Name("test"), steps);
+                TestDataFactory.CreateProcess("test", steps);
             });
         }
 
@@ -57,7 +57,7 @@ namespace Domain.UnitTests.ProcessAggregate
         {
             //Arrange
             var step = TestDataFactory.CreateStep();
-            var process = new Process(new Name("test"), new[] {step});
+            var process = TestDataFactory.CreateProcess("test", new[] {step});
 
             //Act + Assert
             Assert.Throws<StepNotInProcessException>(() =>
@@ -71,7 +71,7 @@ namespace Domain.UnitTests.ProcessAggregate
         {
             //Arrange
             var step = TestDataFactory.CreateStep();
-            var process = new Process(new Name("test"), new[] {step});
+            var process = TestDataFactory.CreateProcess("test", new[] {step});
 
             //Act + Assert
             Assert.Throws<StepNotInProcessException>(() =>
@@ -87,7 +87,7 @@ namespace Domain.UnitTests.ProcessAggregate
             var originStep = TestDataFactory.CreateStep("step1");
             var targetStep = TestDataFactory.CreateStep("step2");
 
-            var process = new Process(new Name("test"), new[] {originStep, targetStep});
+            var process = TestDataFactory.CreateProcess("test", new[] {originStep, targetStep});
 
             //Act + Assert
             Assert.Throws<StepNavigatorNotFoundException>(() =>
@@ -101,7 +101,7 @@ namespace Domain.UnitTests.ProcessAggregate
         {
             //Arrange
             var step = TestDataFactory.CreateStep();
-            var process = new Process(new Name("test"), new[] {step});
+            var process = TestDataFactory.CreateProcess("test", new[] {step});
 
             //Act + Assert
             Assert.Throws<ArgumentNullException>(() => { process.CanMove(null, step, _expectationResolverService); });
@@ -112,7 +112,7 @@ namespace Domain.UnitTests.ProcessAggregate
         {
             //Arrange
             var step = TestDataFactory.CreateStep();
-            var process = new Process(new Name("test"), new[] {step});
+            var process = TestDataFactory.CreateProcess("test", new[] {step});
 
             //Act + Assert
             Assert.Throws<ArgumentNullException>(() =>
@@ -129,7 +129,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_StepNotProvidedForAddStep_Expect_ArgumentNullException()
         {
             //Arrange
-            var process = new Process("test", new List<Step>
+            var process = TestDataFactory.CreateProcess("test", new List<Step>
             {
                 new("test")
             });
@@ -142,7 +142,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_StepProvidedForAddStep_Expect_NewStepPresentInProcessSteps()
         {
             //Arrange
-            var process = new Process("test", new List<Step>
+            var process = TestDataFactory.CreateProcess("test", new List<Step>
             {
                 new("test")
             });
@@ -158,7 +158,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_TryingRemoveStepFromProcessAndStepIsNull_Expect_ArgumentNullExceptionThrown()
         {
             //Arrange
-            var process = new Process("test", new List<Step>
+            var process = TestDataFactory.CreateProcess("test", new List<Step>
             {
                 new("test")
             });
@@ -174,7 +174,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_TryingRemoveStepFromProcessAndStepNotInProcess_Expect_StepsCountDoesNotChange()
         {
             //Arrange
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
             
             process.AddStep(step);
@@ -190,7 +190,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_TryingRemoveStepFromProcessAndStepInProcess_Expect_StepRemovedFromProcess()
         {
             //Arrange
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
             
             process.AddStep(step);
@@ -206,7 +206,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_GotStepCalledAndStepInProcess_Expect_ResultIsTrue()
         {
             //Arrange
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
             
             process.AddStep(step);
@@ -222,7 +222,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_GotStepCalledAndStepNotInProcess_Expect_ResultIsFalse()
         {
             //Arrange
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
 
             //Act

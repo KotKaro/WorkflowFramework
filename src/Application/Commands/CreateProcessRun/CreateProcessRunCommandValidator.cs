@@ -8,7 +8,7 @@ namespace Application.Commands.CreateProcessRun
     {
         public CreateProcessRunCommandValidator()
         {
-            RuleFor(x => x.ProcessId)
+            RuleFor(x => x.ProcessName)
                 .NotEmpty();
             
             RuleFor(x => x.StartStepId)

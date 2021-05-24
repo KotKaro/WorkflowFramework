@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Commands.CreateProcessRun;
+using Common.Tests;
 using Domain.Exceptions;
 using Domain.ProcessAggregate;
 using Domain.Repositories;
@@ -23,7 +24,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             {
                 await sut.Handle(new CreateProcessRunCommand
                 {
-                    ProcessId = Guid.NewGuid(),
+                    ProcessName = Guid.NewGuid().ToString(),
                     StartStepId = Guid.NewGuid()
                 }, CancellationToken.None);
             });
@@ -35,15 +36,15 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             //Arrange
             var sut = CreateHandler(out var processRepositoryMock, out _, out _);
 
-            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Process("test"));
+            processRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(TestDataFactory.CreateProcess("test"));
 
             //Act + Assert
             await Assert.ThrowsAsync<StepNotInProcessException>(async () =>
             {
                 await sut.Handle(new CreateProcessRunCommand
                 {
-                    ProcessId = Guid.NewGuid(),
+                    ProcessName = Guid.NewGuid().ToString(),
                     StartStepId = Guid.NewGuid()
                 }, CancellationToken.None);
             });
@@ -53,7 +54,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
         public async Task When_MemberDescriptorWithProvidedIdDoesNotExists_Expect_ObjectNotFoundExceptionThrown()
         {
             //Arrange
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
 
             process.AddStep(step);
@@ -68,7 +69,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             {
                 await sut.Handle(new CreateProcessRunCommand
                 {
-                    ProcessId = process.Id,
+                    ProcessName = process.Id,
                     StartStepId = step.Id,
                     ArgumentDTOs = new[]
                     {
@@ -86,7 +87,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
         public async Task When_ProcessAndStepExists_Expect_ProcessRunAdded()
         {
             //Arrange
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
 
             process.AddStep(step);
@@ -99,7 +100,7 @@ namespace Application.UnitTests.Commands.CreateProcessRun
             //Act
             await sut.Handle(new CreateProcessRunCommand
             {
-                ProcessId = process.Id,
+                ProcessName = process.Id,
                 StartStepId = step.Id
             }, CancellationToken.None);
 

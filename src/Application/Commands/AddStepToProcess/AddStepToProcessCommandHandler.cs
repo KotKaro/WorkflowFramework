@@ -28,11 +28,11 @@ namespace Application.Commands.AddStepToProcess
                 throw new ObjectNotFoundException(request.StepId, typeof(Step));
             }
             
-            var process = await _processRepository.GetByIdAsync(request.ProcessId);
+            var process = await _processRepository.GetByIdAsync(request.ProcessName);
             
             if (process is null)
             {
-                throw new ObjectNotFoundException(request.ProcessId, typeof(Process));
+                throw new ObjectNotFoundException(request.ProcessName, typeof(Process));
             }
 
             if (!process.Steps.Contains(step))

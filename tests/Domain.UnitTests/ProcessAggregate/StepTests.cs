@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Common.Tests;
 using Domain.Common.ValueObjects;
 using Domain.ProcessAggregate;
 using FluentAssertions;

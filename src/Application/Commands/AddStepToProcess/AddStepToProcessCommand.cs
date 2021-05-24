@@ -5,7 +5,7 @@ namespace Application.Commands.AddStepToProcess
 {
     public class AddStepToProcessCommand : IRequest
     {
-        public Guid ProcessId { get; set; }
+        public string ProcessName { get; set; }
         public Guid StepId { get; set; }
     }
 }

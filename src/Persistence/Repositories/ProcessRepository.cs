@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.ProcessAggregate;
@@ -18,7 +17,7 @@ namespace Persistence.Repositories
             await Context.Set<Process>().AddAsync(process);
         }
 
-        public Task<Process> GetByIdAsync(Guid id)
+        public Task<Process> GetByIdAsync(string id)
         {
             return Context.Set<Process>()
                 .Include(x => x.Steps)

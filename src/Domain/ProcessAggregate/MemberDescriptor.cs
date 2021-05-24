@@ -3,7 +3,7 @@ using Domain.Common;
 
 namespace Domain.ProcessAggregate
 {
-    public class MemberDescriptor : Entity
+    public class MemberDescriptor : GuidEntity
     {
         public string Name { get; private set; }
         public Type Type { get; private set; }

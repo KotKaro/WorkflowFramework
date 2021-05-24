@@ -32,7 +32,6 @@ namespace Application.PipelineBehaviours
             
             var error = string.Join("\r\n", validationFailures);
             throw new ValidationException(error);
-
         }
     }
 }

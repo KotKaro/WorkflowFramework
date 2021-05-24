@@ -16,7 +16,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             //Act
             var result = sut.Validate(new AddStepToProcessCommand
             {
-                ProcessId = Guid.Empty,
+                ProcessName = "",
                 StepId = Guid.NewGuid()
             });
             
@@ -33,7 +33,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             //Act
             var result = sut.Validate(new AddStepToProcessCommand
             {
-                ProcessId = Guid.NewGuid(),
+                ProcessName = "test",
                 StepId = Guid.Empty
             });
             
@@ -50,7 +50,7 @@ namespace Application.UnitTests.Commands.AddStepToProcess
             //Act
             var result = sut.Validate(new AddStepToProcessCommand
             {
-                ProcessId = Guid.NewGuid(),
+                ProcessName = "test",
                 StepId = Guid.NewGuid()
             });
             

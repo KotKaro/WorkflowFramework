@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.IntegrationTests.Commands;
 using Application.Queries.GetProcesses;
+using Common.Tests;
 using Domain.ProcessAggregate;
 using FluentAssertions;
 using Xunit;
@@ -21,7 +22,7 @@ namespace Application.IntegrationTests.Queries.GetProcesses
             //Arrange
             for (var i = 0; i < 100; i++)
             {
-                await Context.Set<Process>().AddAsync(new Process($"test{i}"));
+                await Context.Set<Process>().AddAsync(TestDataFactory.CreateProcess($"test{i}"));
             }
 
             await Context.SaveChangesAsync();
@@ -38,7 +39,7 @@ namespace Application.IntegrationTests.Queries.GetProcesses
         public async Task When_GetProcessesQuery_ReturnedProcessDtoGotNameAndId()
         {
             //Arrange
-            await Context.Set<Process>().AddAsync(new Process($"test"));
+            await Context.Set<Process>().AddAsync(TestDataFactory.CreateProcess($"test"));
             await Context.SaveChangesAsync();
 
             //Act

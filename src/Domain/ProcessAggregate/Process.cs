@@ -4,28 +4,52 @@ using System.Linq;
 using Domain.Common;
 using Domain.Common.ValueObjects;
 using Domain.Exceptions;
+using Domain.Repositories;
 using Domain.Services;
 
 namespace Domain.ProcessAggregate
 {
-    public class Process : Entity
+    public class Process : StringEntity
     {
         private readonly ICollection<Step> _steps;
 
         public Name Name { get; }
         public IEnumerable<Step> Steps => _steps.ToArray();
 
-        private Process()
+        private Process(string id) : base(id)
         {
             _steps ??= new List<Step>();
         }
-        
-        public Process(Name name) : this()
+
+        public static Process Create(Name name, IProcessRepository processRepository)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
+            var process = processRepository.GetByIdAsync(name.Value).Result;
+
+            if (process != null)
+            {
+                throw new EntityAlreadyExistsException(name.Value);
+            }
+
+            return new Process(name);
         }
         
-        public Process(Name name, ICollection<Step> steps) : this(name)
+        public static Process Create(Name name, ICollection<Step> steps, IProcessRepository processRepository)
+        {
+            var process = Create(name, processRepository);
+            
+            foreach (var step in steps)
+            {
+                process.AddStep(step);
+            }
+
+            return process;
+        }
+        
+        private Process(Name name) : this(name.Value)
+        {
+        }
+        
+        private Process(Name name, ICollection<Step> steps) : this(name)
         {
             if (!steps?.Any() ?? true)
             {

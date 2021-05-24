@@ -29,15 +29,15 @@ namespace Application.Commands.CreateProcessRun
 
         public async Task<Unit> Handle(CreateProcessRunCommand request, CancellationToken cancellationToken)
         {
-            var process = await _processRepository.GetByIdAsync(request.ProcessId);
+            var process = await _processRepository.GetByIdAsync(request.ProcessName);
             if (process is null)
             {
-                throw new ObjectNotFoundException(request.ProcessId, typeof(Process));
+                throw new ObjectNotFoundException(request.ProcessName, typeof(Process));
             }
 
             if (!process.GotStep(request.StartStepId))
             {
-                throw new StepNotInProcessException(process, request.ProcessId);
+                throw new StepNotInProcessException(process, request.StartStepId);
             }
 
             var arguments = request.ArgumentDTOs?.Select(x =>

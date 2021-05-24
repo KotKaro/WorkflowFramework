@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Common.Tests;
 using Domain.Common;
 using Domain.Exceptions;
 using Domain.ProcessAggregate;
@@ -34,7 +35,7 @@ namespace Domain.UnitTests.ProcessAggregate
         public void When_ProcessDoesNotContainStartStep_Expect_ArgumentExceptionThrown()
         {
             //Arrange
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("step");
 
             //Act + Assert

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.CreateProcessRun;
+using Common.Tests;
 using Domain.ProcessAggregate;
 using FluentAssertions;
 using FluentValidation;
@@ -29,7 +30,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
             {
                 await mediator!.Send(new CreateProcessRunCommand
                 {
-                    ProcessId = Guid.Empty,
+                    ProcessName = string.Empty,
                     StartStepId = Guid.Empty
                 });
             });
@@ -46,7 +47,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
 
             var typeMetadata = new TypeMetadata(typeof(TestClass));
             
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("step");
             process.AddStep(step);
 
@@ -58,7 +59,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
             //Act
             await mediator!.Send(new CreateProcessRunCommand
             {
-                ProcessId = process.Id,
+                ProcessName = process.Id,
                 StartStepId = step.Id,
             });
 
@@ -77,7 +78,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
 
             var typeMetadata = new TypeMetadata(typeof(TestClass));
             
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("step");
             process.AddStep(step);
 
@@ -89,7 +90,7 @@ namespace Application.IntegrationTests.Commands.CreateProcessRun
             //Act
             await mediator!.Send(new CreateProcessRunCommand
             {
-                ProcessId = process.Id,
+                ProcessName = process.Id,
                 StartStepId = step.Id,
                 ArgumentDTOs = new []
                 {

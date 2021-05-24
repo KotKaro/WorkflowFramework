@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.AddStepToProcess;
+using Common.Tests;
 using Domain.ProcessAggregate;
 using Domain.Repositories;
 using FluentAssertions;
@@ -24,7 +25,7 @@ namespace Application.IntegrationTests.Commands.AddStepToProcess
             var mediator = ApplicationFixture.Host.Services.GetService(typeof(IMediator)) as IMediator;
             var processRepository = ApplicationFixture.Host.Services.GetService(typeof(IProcessRepository)) as IProcessRepository;
             
-            var process = new Process("test");
+            var process = TestDataFactory.CreateProcess("test");
             var step = new Step("test");
             
             await Context.Set<Process>().AddAsync(process);
@@ -34,7 +35,7 @@ namespace Application.IntegrationTests.Commands.AddStepToProcess
             //Act
             await mediator!.Send(new AddStepToProcessCommand
             {
-                ProcessId = process.Id,
+                ProcessName = process.Id,
                 StepId = step.Id
             });
 

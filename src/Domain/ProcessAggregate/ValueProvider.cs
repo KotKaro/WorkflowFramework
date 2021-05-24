@@ -41,6 +41,16 @@ namespace Domain.ProcessAggregate
             return method?.Invoke(instance, GetMethodArguments(arguments, method));
         }
 
+        private MethodInfo GetMethodWithNameAndArguments(object instance, IEnumerable<Argument> arguments)
+        {
+            return instance.GetType()
+                .GetMethods(PublicInstanceBindingFlags)
+                .Where(x => x.Name == Name)
+                .Where(x => x.GetParameters().All(y => arguments.Any(v => v.MemberDescriptor.Name == y.Name)))
+                .OrderByDescending(x => x.GetParameters().Length)
+                .FirstOrDefault();
+        }
+
         private static object[] GetMethodArguments(IEnumerable<Argument> arguments, MethodBase method)
         {
             var parameterNames = method.GetParameters()
@@ -61,22 +71,12 @@ namespace Domain.ProcessAggregate
             return property?.GetValue(instance);
         }
 
-        private MethodInfo GetMethodWithNameAndArguments(object instance, IEnumerable<Argument> arguments)
-        {
-            return instance.GetType()
-                .GetMethods(PublicInstanceBindingFlags)
-                .Where(x => x.Name == Name)
-                .Where(x => x.GetParameters().All(y => arguments.Any(v => v.MemberDescriptor.Name == y.Name)))
-                .OrderByDescending(x => x.GetParameters().Length)
-                .FirstOrDefault();
-        }
-
         private PropertyInfo GetPropertyWithName(object instance)
         {
             return instance.GetType().GetProperties(PublicInstanceBindingFlags)
                 .FirstOrDefault(x => x.Name == Name);
         }
-
+        
         private Exception GetValueNotReachableException(object instance)
         {
             if (MethodArguments.Any())
